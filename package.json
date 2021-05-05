@@ -1,0 +1,22 @@
+{
+  "name": "cs546_s21_group3_final_proj",
+  "version": "1.0.0",
+  "description": "Super Smash Bros Ultimate Tournament Profiles",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brogan20/cs546_s21_group3_final_proj.git"
+  },
+  "author": "Group 3",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brogan20/cs546_s21_group3_final_proj/issues"
+  },
+  "homepage": "https://github.com/brogan20/cs546_s21_group3_final_proj#readme",
+  "dependencies": {
+    "express-handlebars": "^5.3.1"
+  }
+}
