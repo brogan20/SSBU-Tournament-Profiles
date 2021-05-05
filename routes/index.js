@@ -5,7 +5,7 @@ const constructorMethod = (app) => {
   app.use('/users', userRoutes);
   app.use('/characters', characterRoutes);
   app.get('/', (req, res) => {
-    res.render('others/landing', {pageTitle: 'SSBU Tournament Profiles'});
+    res.render('others/landing', {pageTitle: 'SSBU Tournament Profiles', landing: true});
   });
   app.use('*', (req, res) => {
     res.sendStatus(404);

@@ -1,1 +1,6 @@
 <h1>this is a list of all users</h1>
+<ul>
+    {{#each users}}
+    <li><a href="/users/{{this.id}}">{{this.id}}: {{this.name}}</a></li>
+    {{/each}}
+</ul>

@@ -3,7 +3,7 @@ const axios = require('axios');
 const router = express.Router();
 
 router.get('/', async (req, res) =>{
-    res.render('others/allusers', {pageTitle: "User Profiles"})
+    res.render('others/allusers', {pageTitle: "User Profiles", users: [{id: 50, name: "dylan"}, {id: 16, name: "kurt"}]})
 });
 
 router.get('/:id', async (req, res) => {
