@@ -26,7 +26,7 @@ async function initCharDB(charList) {
 	}
 }
 
-// Internal function for adding individual characters
+// Adds a single character to the DB
 async function addChar(displayName, wins, losses) {
 	if (
 		!displayName ||
@@ -60,4 +60,5 @@ async function addChar(displayName, wins, losses) {
 
 module.exports = {
 	initCharDB,
+    addChar,
 };
