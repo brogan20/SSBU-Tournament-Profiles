@@ -59,5 +59,5 @@ async function addChar(displayName, wins, losses) {
 }
 
 module.exports = {
-	initChars,
+	initCharDB,
 };
