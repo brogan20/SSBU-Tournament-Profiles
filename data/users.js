@@ -67,4 +67,5 @@ async function getOneUser(username) {
 
 module.exports = {
     addUser,
+    getOneUser,
 };
