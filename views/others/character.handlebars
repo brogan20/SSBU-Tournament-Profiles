@@ -1,1 +1,58 @@
 <h1>This is the page with the statistics for character with id {{characterid}}</h1>
+<br>
+<h1>{{character.displayName}}</h1>
+<img src={{character.image}}>
+<div class="tab">
+    <button class="tablinks" onclick="openPage(event, 'stat')">Statistics</button> {{!might neeed to change this later}}
+    <button class="tablinks" onclick="openPage(event, 'match')">Matches</button>
+</div>
+
+<!-- Tab content -->
+<div id="stat" class="tabcontent">
+    <h3>Character Statistics</h3>
+    <table>
+        <tr>
+            <th>Wins</th>
+            <th>Losses</th>
+        </tr>
+        <tr>
+            <td>{{character.wins}}</td>
+            <td>{{character.losses}}</td>
+        </tr>
+    </table>
+</div>
+
+<div id="match" class="tabcontent" hidden>
+    <h3>Recent Matches</h3>
+    {{#each match}}
+        <div class="match">
+            <table id="matchTable">
+                <tr id="charRow">
+                    <td id="winner"><a href={{this.winner.charLink}}>{{this.winner.character}}</a></td> {{!Might have to change later}}
+                    <td>Vs.</td>
+                    <td id="loser"><a href={{this.loser.charLink}}>{{this.loser.character}}</a></td>
+                </tr>
+                <tr id = "playerRow">
+                    <td><a href={{this.winner.playerLink}}>{{this.winner.player}}</a></td>
+                    <td></td>
+                    <td><a href={{this.loser.playerLink}}>{{this.loser.player}}</a></td>
+                </tr>
+            </table>
+        </div>
+    {{/each}}
+</div> 
+<script> //make this like not complete garbage
+function openPage(evt, tab) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tab).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
