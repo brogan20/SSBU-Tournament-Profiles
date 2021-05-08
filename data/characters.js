@@ -1,21 +1,41 @@
 const characters = require("../config/mongoCollections").characters;
 
+// Entry layout:
+/**
+ * displayName: string
+ * abrvName: string
+ * wins: object -
+ *      {
+ *          displayName: winsAgainst,
+ *      }
+ *  losses: object -
+ *      {
+ *          displayName: lossesAgainst,
+ *      }
+ */
 let charDB = null;
+
+async function checkDB() {
+	if (charDB === null) charDB = await characters();
+}
 
 function throwErr(func, reason) {
 	throw `characters.js (${func}): ${reason}`;
 }
 
-// Pass in an array of either strings or 3-length arrays
-// 3-length arrays should be in the format [charName, wins, losses]
-// String should only be the character name
-// Returns nothing
-// Throws if inserting a character fails
+/**
+ * Pass in an array of either strings or 3-length arrays
+ * 3-length arrays should be in the format [charName, wins, losses]
+ * String should only be the character name
+ * Returns nothing
+ * Throws if inserting a character fails
+ * TODO: Update to work with new character storage
+ */
 async function initCharDB(charList) {
 	if (!charList || !Array.isArray(charList) || charList.length === 0) {
 		throwErr("initCharDB", "Must get a valid array");
 	}
-	if (charDB === null) charDB = await characters();
+	checkDB();
 
 	for (char of charList) {
 		if (Array.isArray(char)) {
@@ -26,8 +46,14 @@ async function initCharDB(charList) {
 	}
 }
 
-// Adds a single character to the DB
-async function addChar(displayName, wins, losses) {
+/**
+ * Adds a single character to the DB
+ * @param {string} displayName - to act as the displayed name of a character
+ * @param {string} abrvName - string to act as the id of a character
+ * @returns the new character added to the db
+ * @throws when the character cannot be added
+ */
+async function addChar(displayName, abrvName) {
 	if (
 		!displayName ||
 		typeof displayName !== "string" ||
@@ -36,29 +62,106 @@ async function addChar(displayName, wins, losses) {
 		throwErr("addChar", "Must be given valid character name");
 	}
 
-	if (!wins || typeof wins !== "number" || wins < 0) {
-		throwErr("addChar", "Must recieve valid number of wins");
+	if (!abrvName || typeof abrvName !== "string" || !abrvName.trim()) {
+		throwErr("addChar", "Must be given valid abbreviated name");
 	}
-	if (!losses || typeof losses !== "number" || losses < 0) {
-		throwErr("addChar", "Must recieve valid number of losses");
+
+	checkDB();
+
+	const newChar = {
+		displayName: displayName,
+		abrvName: abrvName,
+		wins: {},
+		losses: {},
+	};
+
+	const insertInfo = await charDB.insertOne(newChar);
+	if (insertInfo.insertedCount === 0) {
+		throwErr("addChar", `Failed to add char ${displayName}`);
 	}
-    if (charDB === null) charDB = await characters();
 
-    const newChar = {
-        displayName: displayName,
-        wins: wins,
-        losses: losses,
-    };
+	return await getOneChar(abrvName);
+}
 
-    const insertInfo = await charDB.insertOne(newChar);
-    if (insertInfo.insertedCount === 0) {
-        throwErr("addChar", `Failed to add char ${displayName}`);
-    }
+/**
+ * Gets one character using the display name or abbreviated name
+ * @param {string} charName - character display name or abbreviated name
+ * @returns the char entry if found, otherwise null
+ */
+async function getOneChar(charName) {
+	if (!charName || typeof charName !== "string" || !charName.trim()) {
+		throwErr("getOneChar", "Must be given valid character name");
+	}
 
-    return 1;
+	checkDB();
+
+	let charSearch = await charDB.findOne({
+		$or: [{ displayName: charName }, { abrvName: charName }],
+	});
+
+	return charSearch;
+}
+
+/**
+ *
+ * @returns
+ */
+async function getAllChar() {
+	checkDB();
+
+	let allChar = await charDB.find({}).toArray();
+
+	return allChar;
+}
+
+/**
+ * Adds a win to the winner and a loss to the loser
+ * @param {string} winner displayName or abrvName of the winner
+ * @param {string} loser displayName or abrvName of the loser
+ * @returns A 2-array of the winner and loser's updated documents
+ * @throws either winner or loser is not found in the db or one could not be updated
+ */
+async function addWin(winner, loser) {
+	if (!winner || typeof winner !== "string" || !winner.trim()) {
+		throwErr("addWin", "Must be given valid winner character name");
+	}
+	if (!loser || typeof loser !== "string" || !loser.trim()) {
+		throwErr("addWin", "Must be given valid loser character name");
+	}
+	checkDB();
+
+	let win = await getOneChar(winner);
+	let loss = await getOneChar(loser);
+
+	if (!win) throwErr("addWin", "Winner could not be found in the db");
+	if (!loss) throwErr("addWin", "Loser could not be found in the db");
+
+	if (!win.wins[loss.displayName]) {
+		win.wins[loss.displayName] = 1;
+	} else {
+		win.wins[loss.displayName] += 1;
+	}
+
+	if (!loss.losses[win.displayName]) {
+		loss.losses[win.displayName] = 1;
+	} else {
+		loss.losses[win.displayName] += 1;
+	}
+
+	const updateWins = await charDB.updateOne({ _id: win._id }, { $set, win });
+	if (updateWins.matchedCount === 0)
+		throwErr("addWin", "Could not update wins");
+
+	const updateLoss = await charDB.updateOne({ _id: loss._id }, { $set, loss });
+	if (updateLoss.matchedCount === 0)
+		throwErr("addWin", "Could not update losses");
+
+	return [win, loss];
 }
 
 module.exports = {
-	initCharDB,
-    addChar,
+	addChar,
+	getOneChar,
+	getAllChar,
+	addWin,
 };
