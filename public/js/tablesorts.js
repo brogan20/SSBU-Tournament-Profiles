@@ -3,7 +3,6 @@ function sortTable(sortIndex) {
   var table, rows, switching, i, x, y, shouldSwitch;
   table = document.getElementsByTagName("TABLE")[0];
   switching = true;
-  console.log(sortIndex)
   while (switching) {
     switching = false;
     rows = table.rows;
@@ -11,8 +10,6 @@ function sortTable(sortIndex) {
       shouldSwitch = false;
       x = rows[i].getElementsByClassName(sortIndex)[0];
       y = rows[i + 1].getElementsByClassName(sortIndex)[0];
-      console.log(x);
-      console.log(y);
 
       if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
         shouldSwitch = true;
