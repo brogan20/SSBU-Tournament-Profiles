@@ -1,6 +1,12 @@
 <h1>this is a list of all users</h1>
-<ul>
+<script src="/public/js/tablesorts.js"></script>
+<table>
+    <th class="sortButton">ID</th>
+    <th class="sortButton">Name</th>
     {{#each users}}
-    <li><a href="/users/{{this.id}}">{{this.id}}: {{this.name}}</a></li>
+        <tr class="row">
+            <td class="ID">{{this.id}}</td>
+            <td class="Name"><a href="/users/{{this.name}}">{{this.name}}</a></td>
+        </tr>
     {{/each}}
-</ul>
+</table>

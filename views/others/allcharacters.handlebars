@@ -1,6 +1,12 @@
 <h1>This has the list of all characters</h1>
-<ul>
+<script src="/public/js/tablesorts.js"></script>
+<table>
+    <th class="sortButton">ID</th>
+    <th class="sortButton">Name</th>
     {{#each characters}}
-    <li><a href="/characters/{{this.id}}">{{this.name}}</a></li>
-    {{/each}}
-</ul>
+        <tr class="characterRow">
+            <td class="ID">{{this.id}}</td>
+            <td class="Name"><a href="/characters/{{this.name}}">{{this.name}}</a></td>
+        </tr>
+    {{/each}}   
+</table>
