@@ -1,7 +1,7 @@
 const users = require("../config/mongoCollections").users;
 
 function throwErr(func, reason) {
-	throw `characters.js (${func}): ${reason}`;
+	throw `users.js (${func}): ${reason}`;
 }
 
 let userDB = null;
@@ -64,6 +64,7 @@ async function getOneUser(username) {
     // user isn't found so no further checking is needed
     return userSearch;
 }
+
 
 module.exports = {
     addUser,
