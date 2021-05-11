@@ -35,7 +35,7 @@ async function initCharDB(charList) {
 	if (!charList || !Array.isArray(charList) || charList.length === 0) {
 		throwErr("initCharDB", "Must get a valid array");
 	}
-	checkDB();
+	await checkDB();
 
 	for (char of charList) {
 		if (Array.isArray(char)) {
@@ -66,7 +66,7 @@ async function addChar(displayName, abrvName) {
 		throwErr("addChar", "Must be given valid abbreviated name");
 	}
 
-	checkDB();
+	await checkDB();
 
 	const newChar = {
 		displayName: displayName,
@@ -93,7 +93,7 @@ async function getOneChar(charName) {
 		throwErr("getOneChar", "Must be given valid character name");
 	}
 
-	checkDB();
+	await checkDB();
 
 	let charSearch = await charDB.findOne({
 		$or: [{ displayName: charName }, { abrvName: charName }],
@@ -107,7 +107,7 @@ async function getOneChar(charName) {
  * @returns
  */
 async function getAllChar() {
-	checkDB();
+	await checkDB();
 
 	let allChar = await charDB.find({}).toArray();
 
@@ -128,7 +128,7 @@ async function addWin(winner, loser) {
 	if (!loser || typeof loser !== "string" || !loser.trim()) {
 		throwErr("addWin", "Must be given valid loser character name");
 	}
-	checkDB();
+	await checkDB();
 
 	let win = await getOneChar(winner);
 	let loss = await getOneChar(loser);
