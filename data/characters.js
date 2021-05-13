@@ -24,27 +24,20 @@ function throwErr(func, reason) {
 }
 
 /**
- * Pass in an array of either strings or 3-length arrays
- * 3-length arrays should be in the format [charName, wins, losses]
- * String should only be the character name
- * Returns nothing
- * Throws if inserting a character fails
- * TODO: Update to work with new character storage
+ * Add a bunch of characters from an array
+ * @param charList Array of 2-Arrays in the format [displayName, abrvName]
+ * @returns Nothing
  */
-// async function initCharDB(charList) {
-// 	if (!charList || !Array.isArray(charList) || charList.length === 0) {
-// 		throwErr("initCharDB", "Must get a valid array");
-// 	}
-// 	await checkDB();
-//
-// 	for (char of charList) {
-// 		if (Array.isArray(char)) {
-// 			await addChar(char[0], char[1], char[2]);
-// 		} else {
-// 			await addChar(char, 0, 0);
-// 		}
-// 	}
-// }
+async function initCharDB(charList) {
+	if (!charList || !Array.isArray(charList) || charList.length === 0) {
+		throwErr("initCharDB", "Must get a valid array");
+	}
+	await checkDB();
+
+	for (char of charList) {
+		await addChar(char[0], char[1])
+	}
+}
 
 /**
  * Adds a single character to the DB
@@ -161,6 +154,7 @@ async function addMatch(winner, loser) {
 }
 
 module.exports = {
+	initCharDB,
 	addChar,
 	getOneChar,
 	getAllChar,
