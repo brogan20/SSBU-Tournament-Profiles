@@ -86,7 +86,8 @@ async function addChar(displayName, abrvName) {
 /**
  * Gets one character using the display name or abbreviated name
  * @param {string} charName - character display name or abbreviated name
- * @returns the char entry if found, otherwise null
+ * @returns the char entry
+ * @throws Throws when given invalid input or the char isnt found
  */
 async function getOneChar(charName) {
 	if (!charName || typeof charName !== "string" || !charName.trim()) {
@@ -99,6 +100,8 @@ async function getOneChar(charName) {
 		$or: [{ displayName: charName }, { abrvName: charName }],
 	});
 
+	if (!charSearch) throwErr("getOneChar", "Character not found");
+
 	return charSearch;
 }
 
@@ -109,9 +112,7 @@ async function getOneChar(charName) {
 async function getAllChar() {
 	await checkDB();
 
-	let allChar = await charDB.find({}).toArray();
-
-	return allChar;
+	return await charDB.find({}).toArray();
 }
 
 /**
@@ -121,7 +122,7 @@ async function getAllChar() {
  * @returns A 2-array of the winner and loser's updated documents
  * @throws either winner or loser is not found in the db or one could not be updated
  */
-async function addWin(winner, loser) {
+async function addMatch(winner, loser) {
 	if (!winner || typeof winner !== "string" || !winner.trim()) {
 		throwErr("addWin", "Must be given valid winner character name");
 	}
@@ -163,5 +164,5 @@ module.exports = {
 	addChar,
 	getOneChar,
 	getAllChar,
-	addWin,
+	addWin: addMatch,
 };
