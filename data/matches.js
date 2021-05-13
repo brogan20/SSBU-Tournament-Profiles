@@ -1,7 +1,7 @@
 const matches = require("../config/mongoCollections").matches;
 let {ObjectId} = require("mongodb");
-let users = require("users");
-let chracters = require("characters");
+let users = require("./users");
+let chracters = require("./characters");
 
 /**
  *  winner: string
