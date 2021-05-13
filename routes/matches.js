@@ -24,7 +24,35 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post(':/id', async (req, res) => {
+    let matchInfo = req.body;
+    if (!matchInfo) {
+        res.render('others/400error', {pageTitle: "400", error: "Match info not supplied"});
+        return;
+    }
+    if (!matchInfo.winner || typeof matchInfo.winner != 'string') {
+        res.render('others/400error', {pageTitle: "400", error: "Winner not supplied"});
+        return;
+    }
+    if (!matchInfo.loser || typeof matchInfo.loser != 'string') {
+        res.render('others/400error', {pageTitle: "400", error: "Loser not supplied"});
+        return;
+    }
+    if (!matchInfo.winnerPlayed || typeof matchInfo.winnerPlayed != 'string') {
+        res.render('others/400error', {pageTitle: "400", error: "Character played by winner not supplied"});
+        return;
+    }
+    if (!matchInfo.loserPlayed || typeof matchInfo.loserPlayed != 'string') {
+        res.render('others/400error', {pageTitle: "400", error: "Character played by loser not supplied"});
+        return;
+    }
 
+    try {
+        const match = await matchData.addMatch(matchInfo.winner, matchInfo.loser, matchInfo.winnerPlayed, matchInfo.loserPlayed);
+        res.status(200).json(match);
+    } catch(e) {
+        res.render('others/400error', {pageTitle: "400", error: "Failed to add match"});
+        return;
+    }
 });
 
 module.exports = router;
