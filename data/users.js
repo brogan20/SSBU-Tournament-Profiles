@@ -2,6 +2,7 @@ const users = require("../config/mongoCollections").users;
 
 /**
  * username: string
+ * displayName: string
  * hashedPassword: string
  * charPlayed: object -
  *      {
@@ -44,12 +45,19 @@ async function addUser(username, hashPass) {
     }
 
     if (userDB === null) userDB = await users();
-
-    let usernameSearch = await getOneUser(username);
-    if (usernameSearch !== null) throwErr("addUser", "username already exists");
+    let found = false;
+    try {
+        let usernameSearch = await getOneUser(username);
+        if (usernameSearch !== null) found = true;
+    }
+    catch(e) {}
+    if (found) {
+        throwErr("addUser", "username already exists");
+    }
 
     const newUser = {
         username: username.toUpperCase(),
+        displayName: username,
         hashedPassword: hashPass,
         charPlayed: {},
         userPlayed: {},
@@ -70,15 +78,14 @@ async function addUser(username, hashPass) {
  * @returns {Object} The user requested
  * @throws Throws when given an invalid username or the user cannot be found
  */
-async function getOneUser(username) {
-    if (!username || typeof username !== 'string' || !username.trim()) {
+async function getOneUser(user) {
+    if (!user || typeof user !== 'string' || !user.trim()) {
         throwErr("getOneUser", "Given invalid username");
     }
-
     if (userDB === null) userDB = await users();
 
-    let userSearch = await userDB.findOne({username: username.toUpperCase()});
-
+    let userSearch = await userDB.findOne({username: user.toUpperCase()});
+    
     if (!userSearch) throwErr("getOneUser", "Could not find user");
     return userSearch;
 }
