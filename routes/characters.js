@@ -1,12 +1,34 @@
 const express = require('express');
 const router = express.Router();
+const data = require('../data');
+const characterData = data.characters;
+const matchData = data.matches;
 
 router.get('/', async (req, res) =>{
-    res.render('others/allcharacters', {pageTitle: "Character Profiles", characters: [{id: 8, name: "isabelle"}, {id: 5, name: "mario"}, {id:6, name: "fox"}]})
+    try {
+        var characters = await characterData.getAllChar();
+    } catch (e) {
+        res.render('others/404error', {pageTitle: "404", error: "Characters not found"});
+        return;
+    }
+    res.render('others/allcharacters', {pageTitle: "Character Profiles", characters: characters})
 });
 
-router.get('/:name', async (req, res) => {
-    res.render('others/character', {pageTitle: req.params.id, characterid: req.params.id})
-})
+router.get('/:id', async (req, res) => {
+    try {
+        var character = await characterData.getOneChar(req.params.id);
+    } catch (e) {
+        res.render('others/404error', {pageTitle: "404", error: `Character '${req.params.id}' not found`});
+        return;
+    }
+    character.image = `${req.params.id}.png`;
+    try {
+        var matches = await matchData.getMatchesByCharname(req.params.id);      // brogan said hed write this one :^)
+    } catch (e) {
+        res.render('others/404error', {pageTitle: "404", error: `Could not find matches for character '${req.params.id}'`});
+        return;
+    }
+    res.render('others/character', {pageTitle: `Character: ${character.displayName}`, character: character, matches: matches});
+});
 
 module.exports = router;
