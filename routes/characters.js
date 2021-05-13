@@ -11,7 +11,7 @@ router.get('/', async (req, res) =>{
         res.render('others/404error', {pageTitle: "404", error: "Characters not found"});
         return;
     }
-    res.render('others/allcharacters', {pageTitle: "Character Profiles", characters: characters})
+    res.render('others/allcharacters', {pageTitle: "Character Profiles", characters: characters});
 });
 
 router.get('/:id', async (req, res) => {
