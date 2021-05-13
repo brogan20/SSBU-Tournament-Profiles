@@ -98,7 +98,7 @@ async function getMatchesByCharName(charName) {
         $or: [{winner: charName}, {loser: charName}],
     });
 
-    matchesFound = matchesFound.toArray;
+    matchesFound = matchesFound.toArray();
 
     for (let i = 0; i < matchesFound.length; i++) {
         matchesFound[i]._id = matchesFound[i]._id.toString();
