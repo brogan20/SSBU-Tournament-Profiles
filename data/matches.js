@@ -88,21 +88,27 @@ async function getMatch(id) {
  * @param charName Character name
  * @returns {Array} Contains all matches involving a given character
  */
-async function getMatchesByCharname(charName) {
+async function getMatchesByCharName(charName) {
     if (!charName || typeof charName !== 'string' || !charName.trim()) {
         throwErr("getMatchesByCharname", "Given invalid charName");
     }
     if (matchDB === null) matchDB = await matches();
 
-    let matchesFound = await charDB.find({
+    let matchesFound = await matchDB.find({
         $or: [{winner: charName}, {loser: charName}],
     });
 
-    return matchesFound.toArray();
+    matchesFound = matchesFound.toArray;
+
+    for (let i = 0; i < matchesFound.length; i++) {
+        matchesFound[i]._id = matchesFound[i]._id.toString();
+    }
+
+    return matchesFound;
 }
 
 module.exports = {
     addMatch,
     getAllMatches,
-    getMatchesByCharname
+    getMatchesByCharName
 };
