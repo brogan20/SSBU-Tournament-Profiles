@@ -13,16 +13,19 @@ const users = require("../config/mongoCollections").users;
  *      }
  */
 
-// Entry layout:
-
 function throwErr(func, reason) {
     throw `users.js (${func}): ${reason}`;
 }
 
 let userDB = null;
 
-// To be used at account creation
-// Will also throw if the username given already exists in the db
+/**
+ * Adds a user to the database if they don't already exist
+ * @param {string} username Case insensitve username
+ * @param {string} hashPass The user's hashed password. DO NOT PASS REAL PASSWORDS
+ * @returns {Object} The user that was just created
+ * @throws Throws when the arguments are invalid, the user already exists, or the addition fails
+ */
 async function addUser(username, hashPass) {
     if (
         !username ||
@@ -61,8 +64,12 @@ async function addUser(username, hashPass) {
 }
 
 
-// Retrieves a user based on username
-// Case insensitive
+/**
+ * Finds a user using a case-insensitve username
+ * @param username User to find
+ * @returns {Object} The user requested
+ * @throws Throws when given an invalid username or the user cannot be found
+ */
 async function getOneUser(username) {
     if (!username || typeof username !== 'string' || !username.trim()) {
         throwErr("getOneUser", "Given invalid username");
@@ -76,12 +83,25 @@ async function getOneUser(username) {
     return userSearch;
 }
 
+/**
+ * Gets all users in the DB
+ * @returns {Array} A array of every user
+ */
 async function getAllUsers() {
     if (userDB === null) userDB = await users();
 
     return await userDB.find({}).toArray();
 }
 
+/**
+ * Adds the wins and losses for a match played
+ * @param winner Username of the winner
+ * @param loser Username of the loser
+ * @param winnerPlayed Character the winner played
+ * @param loserPlayed Character the loser played
+ * @returns {Array} A 2-array of the winner and loser's db entries
+ * @throws When given invalid input or a user couldn't be updated
+ */
 async function addMatch(winner, loser, winnerPlayed, loserPlayed) {
     // note to self, a string checking method might be cool
     if (!winner || typeof winner !== 'string' || !winner.trim()) {
