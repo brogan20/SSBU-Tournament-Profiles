@@ -31,20 +31,20 @@ function throwErr(func, reason) {
  * Throws if inserting a character fails
  * TODO: Update to work with new character storage
  */
-async function initCharDB(charList) {
-	if (!charList || !Array.isArray(charList) || charList.length === 0) {
-		throwErr("initCharDB", "Must get a valid array");
-	}
-	await checkDB();
-
-	for (char of charList) {
-		if (Array.isArray(char)) {
-			await addChar(char[0], char[1], char[2]);
-		} else {
-			await addChar(char, 0, 0);
-		}
-	}
-}
+// async function initCharDB(charList) {
+// 	if (!charList || !Array.isArray(charList) || charList.length === 0) {
+// 		throwErr("initCharDB", "Must get a valid array");
+// 	}
+// 	await checkDB();
+//
+// 	for (char of charList) {
+// 		if (Array.isArray(char)) {
+// 			await addChar(char[0], char[1], char[2]);
+// 		} else {
+// 			await addChar(char, 0, 0);
+// 		}
+// 	}
+// }
 
 /**
  * Adds a single character to the DB
@@ -86,7 +86,7 @@ async function addChar(displayName, abrvName) {
 /**
  * Gets one character using the display name or abbreviated name
  * @param {string} charName - character display name or abbreviated name
- * @returns the char entry
+ * @returns {Object} the char entry
  * @throws Throws when given invalid input or the char isnt found
  */
 async function getOneChar(charName) {
@@ -106,8 +106,8 @@ async function getOneChar(charName) {
 }
 
 /**
- *
- * @returns
+ * Gets all characters in the DB
+ * @returns {Array} Array of objects of each character
  */
 async function getAllChar() {
 	await checkDB();
@@ -119,8 +119,8 @@ async function getAllChar() {
  * Adds a win to the winner and a loss to the loser
  * @param {string} winner displayName or abrvName of the winner
  * @param {string} loser displayName or abrvName of the loser
- * @returns A 2-array of the winner and loser's updated documents
- * @throws either winner or loser is not found in the db or one could not be updated
+ * @returns {Array} A 2-array of the winner and loser's updated documents
+ * @throws Throws when winner or loser is not found in the db or one could not be updated
  */
 async function addMatch(winner, loser) {
 	if (!winner || typeof winner !== "string" || !winner.trim()) {
