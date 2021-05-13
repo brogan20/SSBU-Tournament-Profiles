@@ -164,5 +164,5 @@ module.exports = {
 	addChar,
 	getOneChar,
 	getAllChar,
-	addWin: addMatch,
+	addMatch,
 };
