@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
     }
     character.image = `${req.params.id}.png`;
     try {
-        var matches = await matchData.getMatchesByCharname(req.params.id);      // brogan said hed write this one :^)
+        var matches = await matchData.getMatchesByCharName(req.params.id);      // brogan said hed write this one :^)
     } catch (e) {
         res.render('others/404error', {pageTitle: "404", error: `Could not find matches for character '${req.params.id}'`});
         return;
