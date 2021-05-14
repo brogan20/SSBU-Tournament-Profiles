@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
     res.render('others/user', {pageTitle: `User: ${user.displayName}`, user: user});
 });
 
-router.post(':/id', async (req, res) => {
+router.post('/', async (req, res) => {
     let userInfo = req.body;
     if (!userInfo) {
         res.render('others/400error', {pageTitle: "400", error: "User info not supplied"});
