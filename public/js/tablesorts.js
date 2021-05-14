@@ -1,5 +1,5 @@
 //Code taken from https://www.w3schools.com/howto/howto_js_sort_table.asp and modified for this use
-function sortTable(sortIndex) {
+function sortTable(sortIndex, isNumeric) {
   let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
   table = document.getElementsByTagName("TABLE")[0];
   switching = true;
@@ -14,14 +14,34 @@ function sortTable(sortIndex) {
       y = rows[i + 1].getElementsByClassName(sortIndex)[0];
 
       if(dir=="asc"){
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          shouldSwitch = true;
-          break;
+        if(!isNumeric){
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+        else{
+          tempx = x.innerHTML.charAt(x.innerHTML.length - 1) == "%" ? x.innerHTML.substring(0, x.innerHTML.length - 1) : x.innerHTML;
+          tempy = y.innerHTML.charAt(y.innerHTML.length - 1) == "%" ? y.innerHTML.substring(0, y.innerHTML.length - 1) : y.innerHTML;
+          if(parseFloat(tempx) > parseFloat(tempy)){
+            shouldSwitch= true;
+            break;
+          }
         }
       } else{
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          shouldSwitch = true;
-          break;
+        if(!isNumeric){
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+        else{
+          tempx = x.innerHTML.charAt(x.innerHTML.length - 1) == "%" ? x.innerHTML.substring(0, x.innerHTML.length - 1) : x.innerHTML;
+          tempy = y.innerHTML.charAt(y.innerHTML.length - 1) == "%" ? y.innerHTML.substring(0, y.innerHTML.length - 1) : y.innerHTML;
+          if(parseFloat(tempx) < parseFloat(tempy)){
+            shouldSwitch= true;
+            break;
+          }
         }
       }
     }
@@ -46,6 +66,9 @@ document.onclick = function (e) {
     let element = e.target;
 
     if(element.className == 'sortButton'){
-        sortTable(element.innerHTML);
+      sortTable(element.innerHTML, false);
+    }
+    if(element.className == 'sortButtonNumeric'){
+      sortTable(element.innerHTML, true);
     }
 }

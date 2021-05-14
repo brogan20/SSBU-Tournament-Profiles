@@ -1,4 +1,4 @@
-<h1>This is the page for the profile of user with id {{userid}}</h1>
+<script src="/public/js/tablesorts.js"></script>
 <h1>{{user.displayName}}</h1>
 <img src={{charImage}}>
 <dt>Total Wins</dt>
@@ -7,9 +7,57 @@
 <dd>{{losses}}</dd>
 <dt>Rival</dt>
 <dd>Users rival is {{rival.displayName}}, they have beat them {{rival.wins}} times and lost to them {{rival.losses}} times</dd>
-<a href="/user/characterMatchup/{{user.id}}">
-    <button>Character Stats</button>
-</a>
-<a href="/user/playerMatchup/{{user.id}}">
-    <button>Opponent Stats</button>
-</a>
+<div class="tab">
+    <button class="tablinks" onclick="openPage(event, 'character')">Winrates by Character</button> {{!might neeed to change this later}}
+    <button class="tablinks" onclick="openPage(event, 'opponent')">Winrates by Opponent</button>
+</div>
+<div id="character" class ="tabcontent">
+    <h1>Winrates by Character</h1>
+    <table>
+        <th class="sortButton">Character</th>
+        <th class="sortButtonNumeric">Wins</th>
+        <th class="sortButtonNumeric">Losses</th>
+        <th class="sortButtonNumeric">Winrate</th>
+        {{#each user.charPlayed}}
+        <tr>
+            <td class="Character"><a href="../characters/{{@key}}">{{this.[3]}}</a></td>
+            <td class="Wins">{{this.[0]}}</td>
+            <td class="Losses">{{this.[1]}}</td>
+            <td class="Winrate">{{this.[2]}}%</td>
+        </tr>
+        {{/each}}
+    </table>
+</div>
+<div id="opponent" class ="tabcontent" hidden>
+    <h1>Winrates by Opponent</h1>
+    <table>
+        <th class="sortButton">Opponent</th>
+        <th class="sortButtonNumeric">Wins</th>
+        <th class="sortButtonNumeric">Losses</th>
+        <th class="sortButtonNumeric">Winrate</th>
+        {{#each user.userPlayed}}
+        <tr>
+            <td class="Opponent"><a href="./{{@key}}">{{@key}}</a></td>
+            <td class="Wins">{{this.[0]}}</td>
+            <td class="Losses">{{this.[1]}}</td>
+            <td class="Winrate">{{this.[2]}}%</td>
+        </tr>
+        {{/each}}
+    </table>
+</div>
+
+<script> //make this like not complete garbage
+function openPage(evt, tab) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tab).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
