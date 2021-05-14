@@ -28,7 +28,7 @@ async function runSetup() {
     // the collection does not exist yet!
   }
 
-  characters.initCharDB(
+  await characters.initCharDB(
   [["Mario","mario"],
   ["Donkey Kong","donkeykong"],
   ["Link","link"],
@@ -114,12 +114,12 @@ async function runSetup() {
   ["Sephiroth","sephiroth"],
   ["Pyra/Mythra","pyramythra"]]);
 
-  users.addUser('RobotWizard', 'Password1');
-  users.addUser('Shinks', 'Password2');
-  users.addUser('brogan20', 'Password3');
-  users.addUser('pencilman', 'Password4');
+  await users.addUser('RobotWizard', 'Password1');
+  await users.addUser('Shinks', 'Password2');
+  await users.addUser('brogan20', 'Password3');
+  await users.addUser('pencilman', 'Password4');
 
-  matches.addMatch('Shinks', 'RobotWizard', 'zelda', 'luigi');
+  await matches.addMatch('Shinks', 'RobotWizard', 'zelda', 'luigi');
   /*
   matches.addMatch('pencilman', 'Shinks', 'gameandwatch', 'zelda');
   matches.addMatch('Shinks', 'RobotWizard', 'sheik', 'shulk');

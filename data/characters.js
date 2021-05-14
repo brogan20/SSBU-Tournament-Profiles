@@ -34,7 +34,7 @@ async function initCharDB(charList) {
 	}
 	await checkDB();
 
-	for (char of charList) {
+	for (const char of charList) {
 		await addChar(char[0], char[1])
 	}
 }
@@ -72,7 +72,6 @@ async function addChar(displayName, abrvName) {
 	if (insertInfo.insertedCount === 0) {
 		throwErr("addChar", `Failed to add char ${displayName}`);
 	}
-
 	return await getOneChar(abrvName);
 }
 
@@ -86,7 +85,6 @@ async function getOneChar(charName) {
 	if (!charName || typeof charName !== "string" || !charName.trim()) {
 		throwErr("getOneChar", "Must be given valid character name");
 	}
-
 	await checkDB();
 
 	let charSearch = await charDB.findOne({

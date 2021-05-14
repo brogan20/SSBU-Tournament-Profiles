@@ -83,9 +83,9 @@ async function getOneUser(user) {
         throwErr("getOneUser", "Given invalid username");
     }
     if (userDB === null) userDB = await users();
-
-    let userSearch = await userDB.findOne({username: user.toUpperCase()});
     
+    let userSearch = await userDB.findOne({username: user.toUpperCase()});
+
     if (!userSearch) throwErr("getOneUser", "Could not find user");
     return userSearch;
 }
@@ -152,11 +152,11 @@ async function addMatch(winner, loser, winnerPlayed, loserPlayed) {
         lossUser.charPlayed[loserPlayed][1] += 1;
     }
 
-    const updateWins = await userDB.updateOne({ _id: lossUser._id }, { $set, winUser });
+    const updateWins = await userDB.updateOne({ _id: lossUser._id }, { $inc: {winUser: 1}});
     if (updateWins.matchedCount === 0)
         throwErr("addMatch", "Could not update Winner");
 
-    const updateLoss = await userDB.updateOne({ _id: lossUser._id }, { $set, lossUser });
+    const updateLoss = await userDB.updateOne({ _id: lossUser._id }, { $inc: { lossUser: 1}});
     if (updateLoss.matchedCount === 0)
         throwErr("addMatch", "Could not update Loser");
 

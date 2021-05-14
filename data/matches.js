@@ -57,7 +57,7 @@ async function addMatch(winner, loser, winnerPlayed, loserPlayed) {
     }
 
     await users.addMatch(winner, loser, winnerPlayed, loserPlayed);
-    await chracters.addMatch(winner, loser);
+    await chracters.addMatch(winnerPlayed, loserPlayed);
 
     return await getMatch(insertInfo.insertedId.toString());
 }
