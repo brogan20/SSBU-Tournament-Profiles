@@ -8,6 +8,9 @@ const constructorMethod = (app) => {
   app.use('/characters', characterRoutes);
   app.use('/matches', matchRoutes);
   app.use('/tournaments', tournamentRoutes);
+  app.get('/login',(req, res) => {
+    res.render('others/login', {pageTitle: 'Login'});
+  })
   app.get('/', (req, res) => {
     res.render('others/landing', {pageTitle: 'SSBU Tournament Profiles', landing: true});
   });
