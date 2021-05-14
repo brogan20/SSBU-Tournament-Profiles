@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const data = require('../data');
+const charData = data.characters
 const matchData = data.matches;
 const commentData = data.comments;
 
@@ -11,16 +12,23 @@ router.get('/', async (req, res) => {
         res.render('others/404error', {pageTitle: "404", error: "Matches not found"});
         return;
     }
+
+    for(const elem of matches){
+        elem.winnerPlayedDisplay = charData.charNameMap[elem.winnerPlayed]
+        elem.loserPlayedDisplay = charData.charNameMap[elem.loserPlayed]
+    }
     res.render('others/allmatches', {pageTitle: "Match Profiles", matches: matches});
 });
 
 router.get('/:id', async (req, res) => {
     try {
-        var match = await matchData.getOneMatch(req.params.id);
+        var match = await matchData.getMatch(req.params.id);
     } catch (e) {
         res.render('others/404error', {pageTitle: "404", error: `Match ${req.params.id} not found`});
         return;
     }
+    match.winnerPlayedDisplay = charData.charNameMap[match.winnerPlayed]
+    match.loserPlayedDisplay = charData.charNameMap[match.loserPlayed]
     res.render('others/match', {pageTitle: `Match: ${match.winner} vs. ${match.loser}`, match: match});
 });
 

@@ -6,7 +6,7 @@ const tournamentRoutes = require('./tournaments');
 const constructorMethod = (app) => {
   app.use('/users', userRoutes);
   app.use('/characters', characterRoutes);
-  app.use('/mathces', matchRoutes);
+  app.use('/matches', matchRoutes);
   app.use('/tournaments', tournamentRoutes);
   app.get('/', (req, res) => {
     res.render('others/landing', {pageTitle: 'SSBU Tournament Profiles', landing: true});

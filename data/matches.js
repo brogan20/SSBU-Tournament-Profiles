@@ -69,6 +69,7 @@ async function getAllMatches() {
 
 async function getMatch(id) {
     if (!id || typeof id !== 'string' || !id.trim()) {
+        console.log(1);
         throwErr("getMatch", "Given invalid id");
     }
     let oid = ObjectId(id);
@@ -110,5 +111,6 @@ async function getMatchesByCharName(charName) {
 module.exports = {
     addMatch,
     getAllMatches,
-    getMatchesByCharName
+    getMatchesByCharName,
+    getMatch
 };

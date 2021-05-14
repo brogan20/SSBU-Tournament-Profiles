@@ -4,11 +4,16 @@
         let showCount = 0
         $("tr").not(".header").each(function(){
             //Uses the built in includes function to check if the result should be shown
-            if($(this).children()[0].textContent.trim().toLowerCase().includes(searchTerm.toLowerCase())){
-                $(this).show()
-                showCount += 1
+            let found = false;
+            for(const elem of $(this).children()){
+                if(elem.textContent.trim().toLowerCase().includes(searchTerm.toLowerCase())){
+                    $(this).show()
+                    found = true;
+                    showCount += 1;
+                    break;
+                }
             }
-            else{
+            if (!found){
                 $(this).hide()
                 hideCount += 1
             }
