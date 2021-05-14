@@ -1,3 +1,9 @@
+const startUpDocs = require('./config/seed');
+async function main() {
+  const startUp = await startUpDocs.runSetup();
+}
+main();
+
 const express = require('express');
 const app = express();
 const static = express.static(__dirname + '/public');
