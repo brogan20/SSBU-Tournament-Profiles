@@ -124,33 +124,33 @@ async function addMatch(winner, loser) {
 	}
 	await checkDB();
 
-	let win = await getOneChar(winner);
-	let loss = await getOneChar(loser);
+	let winUser = await getOneChar(winner);
+	let lossUser = await getOneChar(loser);
 
-	if (!win) throwErr("addWin", "Winner could not be found in the db");
-	if (!loss) throwErr("addWin", "Loser could not be found in the db");
+	if (!winUser) throwErr("addWin", "Winner could not be found in the db");
+	if (!lossUser) throwErr("addWin", "Loser could not be found in the db");
 
-	if (!win.wins[loss.displayName]) {
-		win.wins[loss.displayName] = 1;
+	if (!winUser.wins[lossUser.displayName]) {
+		winUser.wins[lossUser.displayName] = 1;
 	} else {
-		win.wins[loss.displayName] += 1;
+		winUser.wins[lossUser.displayName] += 1;
 	}
 
-	if (!loss.losses[win.displayName]) {
-		loss.losses[win.displayName] = 1;
+	if (!lossUser.losses[winUser.displayName]) {
+		lossUser.losses[winUser.displayName] = 1;
 	} else {
-		loss.losses[win.displayName] += 1;
+		lossUser.losses[winUser.displayName] += 1;
 	}
 
-	const updateWins = await charDB.updateOne({ _id: win._id }, { $set, win });
+	const updateWins = await charDB.updateOne({ _id: winUser._id }, { $set: winUser });
 	if (updateWins.matchedCount === 0)
 		throwErr("addWin", "Could not update wins");
 
-	const updateLoss = await charDB.updateOne({ _id: loss._id }, { $set, loss });
+	const updateLoss = await charDB.updateOne({ _id: lossUser._id }, { $set: lossUser });
 	if (updateLoss.matchedCount === 0)
 		throwErr("addWin", "Could not update losses");
 
-	return [win, loss];
+	return [winUser, lossUser];
 }
 
 module.exports = {
