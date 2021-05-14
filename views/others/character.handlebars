@@ -11,35 +11,36 @@
 <div id="stat" class="tabcontent">
     <h3>Character Statistics</h3>
     <table>
+        <th>Wins</th>
+        <th>Losses</th>
         <tr>
-            <th>Wins</th>
-            <th>Losses</th>
-        </tr>
-        <tr>
-            <td>{{character.wins}}</td>
-            <td>{{character.losses}}</td>
+            <td>{{wins}}</td>
+            <td>{{losses}}</td>
         </tr>
     </table>
 </div>
 
 <div id="match" class="tabcontent" hidden>
     <h3>Recent Matches</h3>
-    {{#each matches}}
-        <div class="match">
-            <table id="matchTable">
-                <tr id="charRow">
-                    <td id="winner"><a href="characters/{{this.winnerPlayer}}">{{this.winnerPlayed}}</a></td> {{!Might have to change later}}
-                    <td>Vs.</td>
-                    <td id="loser"><a href="characters/{{this.loserPlayed}}">{{this.loserPlayed}}</a></td>
-                </tr>
-                <tr id = "playerRow">
-                    <td><a href="users/{{this.winner}}">{{this.winner}}</a></td>
-                    <td></td>
-                    <td><a href="users/{{this.loser}}">{{this.loser}}</a></td>
-                </tr>
-            </table>
-        </div>
-    {{/each}}
+    <div class="matches">
+        <table id="matchTable">
+            <th>Winner</th>
+            <th>Loser</th>
+            {{#each matches}}
+            <tr id="charRow">
+                <td id="winner">
+                    <a href="../users/{{this.winner}}">{{this.winner}}</a>
+                    (<a href="./{{this.winnerPlayed}}">{{this.winnerPlayedDisplay}}</a>)
+                </td>
+                <td id="loser">
+                    <a href="../users/{{this.loser}}">{{this.loser}}</a>
+                    (<a href="./{{this.loserPlayed}}">{{this.loserPlayedDisplay}}</a>)
+                </td>
+                {{!Add a tournamentplayed field}}
+            </tr>
+            {{/each}}
+        </table>
+    </div>
 </div> 
 <script> //make this like not complete garbage
 function openPage(evt, tab) {

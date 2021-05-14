@@ -152,11 +152,28 @@ async function addMatch(winner, loser, winnerPlayed, loserPlayed) {
         lossUser.charPlayed[loserPlayed][1] += 1;
     }
 
-    const updateWins = await userDB.updateOne({ _id: lossUser._id }, { $inc: {winUser: 1}});
+    if(winner == winUser.displayName){
+        if (!winUser.userPlayed[loser]){
+            winUser.userPlayed[loser] = [0,0];
+            lossUser.userPlayed[winner] = [0,0];
+        }
+        winUser.userPlayed[loser][0] += 1;
+        lossUser.userPlayed[winner][1] += 1;
+    }
+    else{
+        if (!lossUser.userPlayed[winner]){
+            winUser.userPlayed[loser] = [0,0];
+            lossUser.userPlayed[winner] = [0,0];
+        }
+        winUser.userPlayed[loser][1] += 1;
+        lossUser.userPlayed[winner][0] += 1;
+    }
+
+    const updateWins = await userDB.updateOne({ _id: winUser._id }, { $set: winUser });
     if (updateWins.matchedCount === 0)
         throwErr("addMatch", "Could not update Winner");
 
-    const updateLoss = await userDB.updateOne({ _id: lossUser._id }, { $inc: { lossUser: 1}});
+    const updateLoss = await userDB.updateOne({ _id: lossUser._id }, { $set: lossUser });
     if (updateLoss.matchedCount === 0)
         throwErr("addMatch", "Could not update Loser");
 

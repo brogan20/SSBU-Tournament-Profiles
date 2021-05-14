@@ -20,7 +20,21 @@ router.get('/:id', async (req, res) => {
         res.render('others/404error', {pageTitle: "404", error: `User ${req.params.id} not found`});
         return;
     }
-    res.render('others/user', {pageTitle: `User: ${user.displayName}`, user: user});
+
+    let wins = 0;
+    let losses = 0;
+    let rival = {displayName: "This user has not played anyone", wins: 0, losses: 0}
+    for(const elem in user.userPlayed){
+        wins += user.userPlayed[elem][0];
+        losses += user.userPlayed[elem][1];
+        if(user.userPlayed[elem][0] + user.userPlayed[elem][1] > rival.wins + rival.losses){
+            rival.displayName = elem;
+            rival.wins = user.userPlayed[elem][0];
+            rival.losses = user.userPlayed[elem][1];
+        }
+    }
+
+    res.render('others/user', {pageTitle: `User: ${user.displayName}`, user: user, wins: wins, losses: losses, rival: rival});
 });
 
 router.post('/', async (req, res) => {

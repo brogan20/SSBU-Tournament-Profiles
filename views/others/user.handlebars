@@ -2,11 +2,11 @@
 <h1>{{user.displayName}}</h1>
 <img src={{charImage}}>
 <dt>Total Wins</dt>
-<dd>{{user.wins}}</dd>
+<dd>{{wins}}</dd>
 <dt>Total Losses</dt>
-<dd>{{user.losses}}</dd>
+<dd>{{losses}}</dd>
 <dt>Rival</dt>
-<dd>{{user.rival.name}} ({{user.rival.wins}}/{{user.rival.losses}}</dd>
+<dd>Users rival is {{rival.displayName}}, they have beat them {{rival.wins}} times and lost to them {{rival.losses}} times</dd>
 <a href="/user/characterMatchup/{{user.id}}">
     <button>Character Stats</button>
 </a>

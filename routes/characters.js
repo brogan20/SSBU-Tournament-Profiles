@@ -29,8 +29,22 @@ router.get('/:id', async (req, res) => {
         res.render('others/404error', {pageTitle: "404", error: `Could not find matches for character '${req.params.id}'`});
         return;
     }
-    console.log(matches);
-    res.render('others/character', {pageTitle: `Character: ${character.displayName}`, character: character, matches: matches});
+
+    //Counts wins and losses to be displayed
+    let wins = 0;
+    let losses = 0;
+    for(const elem of matches){
+        if(elem.winnerPlayed == req.params.id){
+            wins += 1;
+        }
+        else{
+            losses += 1;
+        }
+        elem.winnerPlayedDisplay = characterData.charNameMap[elem.winnerPlayed];
+        elem.loserPlayedDisplay = characterData.charNameMap[elem.loserPlayed];
+    }
+
+    res.render('others/character', {pageTitle: `Character: ${character.displayName}`, character: character, matches: matches, wins: wins, losses: losses});
 });
 
 module.exports = router;
