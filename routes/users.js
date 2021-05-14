@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const userData = data.users;
+const charData = data.characters;
 
 router.get('/', async (req, res) => {
     try {
@@ -32,6 +33,12 @@ router.get('/:id', async (req, res) => {
             rival.wins = user.userPlayed[elem][0];
             rival.losses = user.userPlayed[elem][1];
         }
+        user.userPlayed[elem][2] = (Math.round(user.userPlayed[elem][0] / (user.userPlayed[elem][0] + user.userPlayed[elem][1]) * 1000) / 10).toFixed(2);
+    }
+
+    for(const elem in user.charPlayed){
+        user.charPlayed[elem][2] = (Math.round(user.charPlayed[elem][0] / (user.charPlayed[elem][0] + user.charPlayed[elem][1]) * 1000) / 10).toFixed(2);
+        user.charPlayed[elem][3] = charData.charNameMap[elem];
     }
 
     res.render('others/user', {pageTitle: `User: ${user.displayName}`, user: user, wins: wins, losses: losses, rival: rival});

@@ -1,7 +1,6 @@
 //Code taken from https://www.w3schools.com/howto/howto_js_sort_table.asp and modified for this use
-function sortTable(sortIndex) {
-  let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
-  table = document.getElementsByTagName("TABLE")[0];
+function sortTable(sortIndex, table, isNumeric) {
+  let rows, switching, i, x, y, shouldSwitch, dir, switchcount;
   switching = true;
   dir="asc";
   switchcount = 0;
@@ -13,28 +12,19 @@ function sortTable(sortIndex) {
       x = rows[i].getElementsByClassName(sortIndex)[0];
       y = rows[i + 1].getElementsByClassName(sortIndex)[0];
 
-      if(dir=="asc"){
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          shouldSwitch = true;
-          break;
-        }
-      } else{
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          shouldSwitch = true;
-          break;
-        }
+      tempx = isNumeric? parseFloat(x.innerHTML.replace("%","")) : x.innerHTML.toLowerCase();
+      tempy = isNumeric? parseFloat(y.innerHTML.replace("%","")) : y.innerHTML.toLowerCase();
+      shouldSwitch = (tempx > tempy) ? (dir == "asc") : (dir == "desc");
+      if(shouldSwitch){
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount++;
+        break;
       }
     }
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      console.log('hello')
-      switchcount++;
-    }
-    else {
+    if(!shouldSwitch) {
       if (switchcount == 0 && dir == "asc") {
         dir = "desc";
-        console.log('hello2')
         switching = true;
       }
     }
@@ -46,6 +36,9 @@ document.onclick = function (e) {
     let element = e.target;
 
     if(element.className == 'sortButton'){
-        sortTable(element.innerHTML);
+      sortTable(element.innerHTML, element.parentElement.parentElement, false);
+    }
+    if(element.className == 'sortButtonNumeric'){
+      sortTable(element.innerHTML, element.parentElement.parentElement, true);
     }
 }
