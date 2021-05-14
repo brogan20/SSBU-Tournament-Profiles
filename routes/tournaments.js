@@ -23,8 +23,28 @@ router.get('/:id', async (req, res) => {
     res.render('others/tournament', {pageTitle: `Tournament: ${req.params.id}`, tournament: tournament});
 });
 
-router.post(':/id', async (req, res) => {
+router.post('/', async (req, res) => {
+    let tournamentInfo = req.body;
+    if (!tournamentInfo) {
+        res.render('others/400error', {pageTitle: "400", error: "Tournament info not supplied"});
+        return;
+    }
+    if (!tournamentInfo.matches || !Arrays.isArray(tournamentInfo.matches)) {
+        res.render('others/400error', {pageTitle: "400", error: "Tournament matches not supplied"});
+        return;
+    }
+    if (!tournamentInfo.players || !Arrays.isArray(tournamentInfo.players)) {
+        res.render('others/400error', {pageTitle: "400", error: "Tournament players not supplied"});
+        return;
+    }
 
+    try {
+        const tournament = await tournamentData.getTournament(tournamentInfo.matches, tournamentInfo.players);
+        res.status(200).json(tournament);
+    } catch (e) {
+        res.render('others/400error', {pageTitle: "400", error: "Failed to add tournament"});
+        return;
+    }
 });
 
 module.exports = router;

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const matchData = data.matches;
+const commentData = data.comments;
 
 router.get('/', async (req, res) => {
     try {
@@ -23,7 +24,7 @@ router.get('/:id', async (req, res) => {
     res.render('others/match', {pageTitle: `Match: ${match.winner} vs. ${match.loser}`, match: match});
 });
 
-router.post(':/id', async (req, res) => {
+router.post('/', async (req, res) => {
     let matchInfo = req.body;
     if (!matchInfo) {
         res.render('others/400error', {pageTitle: "400", error: "Match info not supplied"});
@@ -51,6 +52,30 @@ router.post(':/id', async (req, res) => {
         res.status(200).json(match);
     } catch(e) {
         res.render('others/400error', {pageTitle: "400", error: "Failed to add match"});
+        return;
+    }
+});
+
+router.post('/:id', async (req, res) => {
+    let commentInfo = req.body;
+    if (!commentInfo) {
+        res.render('others/400error', {pageTitle: "400", error: "Comment info not supplied"});
+        return;
+    }
+    if (!commentInfo.poster || typeof commentInfo.poster !== 'string') {
+        res.render('others/400error', {pageTitle: "400", error: "Comment poster not supplied"});
+        return;
+    }
+    if (!commentInfo.comment || typeof commentInfo.comment !== 'string') {
+        res.render('others/400error', {pageTitle: "400", error: "Comment content not suppied"});
+        return;
+    }
+
+    try {
+        const comment = await commentData.addComment(commentInfo.poster, commentInfo.comment);
+        res.status(200).json(comment);
+    } catch (e) {
+        res.render('others/400error', {pageTitle: "400", error: "Failed to add comment"});
         return;
     }
 });
