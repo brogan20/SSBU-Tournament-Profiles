@@ -1,10 +1,20 @@
 <h1>this is a list of all users</h1>
 <script src="/public/js/tablesorts.js"></script>
+<script src="/public/js/tablesearch.js"></script>
+<form class="searchForm">
+    <label for="search_term">Search Term</label>
+    <input type="text" name ="search_term" id="search_term">
+    <button class="search">Search</button>
+</form>
+<button class="clearResults" hidden="true">Clear Results</button>
 <table>
-    <th class="sortButton">Name</th>
+    <tr class="header">
+        <th class="sortButton">Name</th>
+    </tr>
     {{#each users}}
         <tr class="row">
             <td class="Name"><a href="/users/{{this.displayName}}">{{this.displayName}}</a></td>
         </tr>
     {{/each}}
 </table>
+<label class="noResult" hidden="true">There are no results, please try again with a different query</label>
