@@ -24,18 +24,18 @@
 
 <div id="match" class="tabcontent" hidden>
     <h3>Recent Matches</h3>
-    {{#each match}}
+    {{#each matches}}
         <div class="match">
             <table id="matchTable">
                 <tr id="charRow">
-                    <td id="winner"><a href={{this.winner.charLink}}>{{this.winner.character}}</a></td> {{!Might have to change later}}
+                    <td id="winner"><a href="characters/{{this.winnerPlayer}}">{{this.winnerPlayed}}</a></td> {{!Might have to change later}}
                     <td>Vs.</td>
-                    <td id="loser"><a href={{this.loser.charLink}}>{{this.loser.character}}</a></td>
+                    <td id="loser"><a href="characters/{{this.loserPlayed}}">{{this.loserPlayed}}</a></td>
                 </tr>
                 <tr id = "playerRow">
-                    <td><a href={{this.winner.playerLink}}>{{this.winner.player}}</a></td>
+                    <td><a href="users/{{this.winner}}">{{this.winner}}</a></td>
                     <td></td>
-                    <td><a href={{this.loser.playerLink}}>{{this.loser.player}}</a></td>
+                    <td><a href="users/{{this.loser}}">{{this.loser}}</a></td>
                 </tr>
             </table>
         </div>

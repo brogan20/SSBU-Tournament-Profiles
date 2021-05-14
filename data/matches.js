@@ -95,7 +95,7 @@ async function getMatchesByCharName(charName) {
     if (matchDB === null) matchDB = await matches();
 
     let matchesFound = await matchDB.find({
-        $or: [{winner: charName}, {loser: charName}],
+        $or: [{winnerPlayed: charName}, {loserPlayed: charName}],
     });
 
     matchesFound = matchesFound.toArray();

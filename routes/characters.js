@@ -15,19 +15,21 @@ router.get('/', async (req, res) =>{
 });
 
 router.get('/:id', async (req, res) => {
+    let matches, character;
     try {
-        var character = await characterData.getOneChar(req.params.id);
+        character = await characterData.getOneChar(req.params.id);
     } catch (e) {
         res.render('others/404error', {pageTitle: "404", error: `Character '${req.params.id}' not found`});
         return;
     }
     character.image = `${req.params.id}.png`;
     try {
-        var matches = await matchData.getMatchesByCharName(req.params.id);
+        matches = await matchData.getMatchesByCharName(req.params.id);
     } catch (e) {
         res.render('others/404error', {pageTitle: "404", error: `Could not find matches for character '${req.params.id}'`});
         return;
     }
+    console.log(matches);
     res.render('others/character', {pageTitle: `Character: ${character.displayName}`, character: character, matches: matches});
 });
 
