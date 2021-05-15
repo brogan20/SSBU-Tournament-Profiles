@@ -2,22 +2,40 @@ html {
     background-color: lightgrey;
 }
 
-#matchTable {
+#matchTable {    
     border-collapse: collapse;
 }
 
-#matchTable tr:nth-child(even){background-color: #f2f2f2;}
+#matchTable td, #matchTable th {
+    border: solid black 1px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
 
 #matchTable tr:hover {background-color: #ddd;}
 
 #matchTable th {
-    padding-top: 12px;
-    padding-bottom: 12px;
     background-color: lightcoral;
-    min-width: 200px;
-    color: white;
+    min-width: 100px;
+}
+#characterList {
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: solid black 1px;
 }
 
 #characterList td {
     font-size: 29px;
+    
+}
+
+#characterList tr.row td{
+    border-collapse: collapse;
+    border: solid black 1px;
+    width: 318px;
+}
+
+#characterList th {
+    background-color: lightcoral;
+    border: solid black 1px;
 }
