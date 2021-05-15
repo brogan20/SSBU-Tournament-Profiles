@@ -12,7 +12,7 @@
 {{/if}}
 <dl class="matchComments">
 {{#each match.comments}}
-    <dt>{{this.username}}</dt>
+    <dt><a href="/users/{{this.username}}">{{this.username}}</a></dt>
     <dd>{{this.content}}</dd>
 {{/each}}
 </dl>

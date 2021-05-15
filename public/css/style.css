@@ -99,6 +99,38 @@ table.standings td.Player{
     font-size: 20px;
 }
 
+table.character {
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: solid black 1px;
+}
+
+table.character tr td{
+    border-collapse: collapse;
+    border: solid black 1px;
+}
+
+table.character th {
+    background-color: lightcoral;
+    border: solid black 1px;
+}
+
+table.opponent {
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: solid black 1px;
+}
+
+table.opponent tr td{
+    border-collapse: collapse;
+    border: solid black 1px;
+}
+
+table.opponent th {
+    background-color: lightcoral;
+    border: solid black 1px;
+}
+
 a.header {
     padding-left: 10px;
     padding-right: 10px;
@@ -148,4 +180,12 @@ div.home {
 
 p.error {
     color: red;
+}
+
+dl.matchComments {
+    font-size: 18px;
+}
+
+dl.matchComments dd{
+    margin-bottom: 15px;
 }
