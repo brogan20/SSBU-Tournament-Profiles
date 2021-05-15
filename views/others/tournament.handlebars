@@ -4,7 +4,7 @@
     <button class="tablinks" onclick="openPage(event, 'allMatches')">All Matches</button>
 </div>
 <div id="standings" class ="tabcontent">
-    <h1>Winrates by Character</h1>
+    <h1>Tournament Results</h1>
     <table class="standings">
         <tr>
             <th class="sortButton">Player</th>
@@ -15,12 +15,14 @@
         {{#each users}}
         <tr>
             <td class="Player">
-                <a href="./{{@key}}">{{@key}}</a>
-                <img src="../../public/imageheads/{{this.[3]}}.png" alt="{{this.[3]}}">
+                <a href="../users/{{this.[0]}}">{{this.[0]}}</a>
+                {{#each this.[1].[3]}}
+                    <img src="../../public/imageheads/{{this.[0]}}.png" alt="{{this.[0]}}">
+                {{/each}}
             </td>
-            <td class="Wins">{{this.[0]}}</td>
-            <td class="Losses">{{this.[1]}}</td>
-            <td class="Winrate">{{this.[2]}}%</td>
+            <td class="Wins">{{this.[1].[0]}}</td>
+            <td class="Losses">{{this.[1].[1]}}</td>
+            <td class="Winrate">{{this.[1].[2]}}%</td>
         </tr>
         {{/each}}
     </table>

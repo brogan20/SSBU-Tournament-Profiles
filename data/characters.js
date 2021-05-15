@@ -93,7 +93,7 @@ async function getOneChar(charName) {
 		$or: [{ displayName: charName }, { abrvName: charName }],
 	});
 
-	if (!charSearch) throwErr("getOneChar", "Character not found");
+	if (!charSearch) throwErr("getOneChar", charName);
 
 	return charSearch;
 }
