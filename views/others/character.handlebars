@@ -1,5 +1,3 @@
-<h1>This is the page with the statistics for character with id {{characterid}}</h1>
-<br>
 <h1>{{character.displayName}}</h1>
 <img src="/public/images/{{character.abrvName}}.png">
 <div class="tab">
@@ -22,25 +20,23 @@
 
 <div id="match" class="tabcontent" hidden>
     <h3>Recent Matches</h3>
-    <div class="matches">
-        <table id="matchTable">
-            <th>Winner</th>
-            <th>Loser</th>
-            {{#each matches}}
-            <tr id="charRow">
-                <td id="winner">
-                    <a href="../users/{{this.winner}}">{{this.winner}}</a>
-                    (<a href="./{{this.winnerPlayed}}">{{this.winnerPlayedDisplay}}</a>)
-                </td>
-                <td id="loser">
-                    <a href="../users/{{this.loser}}">{{this.loser}}</a>
-                    (<a href="./{{this.loserPlayed}}">{{this.loserPlayedDisplay}}</a>)
-                </td>
-                {{!Add a tournamentplayed field}}
-            </tr>
-            {{/each}}
-        </table>
-    </div>
+    <table id="matchTable">
+        <th>Winner</th>
+        <th>Loser</th>
+        {{#each matches}}
+        <tr class="match">
+            <td class="winner">
+                <a href="../users/{{this.winner}}">{{this.winner}}</a>
+                (<a href="./{{this.winnerPlayed}}">{{this.winnerPlayedDisplay}}</a>)
+            </td>
+            <td class="loser">
+                <a href="../users/{{this.loser}}">{{this.loser}}</a>
+                (<a href="./{{this.loserPlayed}}">{{this.loserPlayedDisplay}}</a>)
+            </td>
+            {{!Add a tournamentplayed field}}
+        </tr>
+        {{/each}}
+    </table>
 </div> 
 <script> //make this like not complete garbage
 function openPage(evt, tab) {

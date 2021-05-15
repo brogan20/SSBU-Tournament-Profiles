@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
         elem.winnerPlayedDisplay = charData.charNameMap[elem.winnerPlayed]
         elem.loserPlayedDisplay = charData.charNameMap[elem.loserPlayed]
     }
-    res.render('others/allmatches', {pageTitle: "Match Profiles", matches: matches});
+    res.render('others/allmatches', {pageTitle: "All Matches", matches: matches});
 });
 
 router.get('/:id', async (req, res) => {

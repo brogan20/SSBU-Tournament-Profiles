@@ -1,4 +1,3 @@
-<h1>This has the list of all matches</h1>
 <script src="/public/js/tablesorts.js"></script>
 <script src="/public/js/tablesearch.js"></script>
 <form class="searchForm">
@@ -6,25 +5,26 @@
     <input type="text" name ="search_term" id="search_term">
     <button class="search">Search</button>
 </form>
-<button class="clearResults" hidden="true">Clear Results</button>
-<table>
+<button class="clearResults" hidden>Clear Results</button>
+<table id = "matchTable">
     <tr class="header">
         <th class="sortButton">Winner</th>
         <th class="sortButton">Loser</th>
+        <th>comments</th>
     </tr>
     {{#each matches}}
-    <tr id="charRow">
-        <td id="winner">
+    <tr class="match">
+        <td class="winner">
             <a href="../users/{{this.winner}}">{{this.winner}}</a>
             (<a href="../characters/{{this.winnerPlayed}}">{{this.winnerPlayedDisplay}}</a>)
         </td>
-        <td id="loser">
+        <td class="loser">
             <a href="../users/{{this.loser}}">{{this.loser}}</a>
             (<a href="../characters/{{this.loserPlayed}}">{{this.loserPlayedDisplay}}</a>)
         </td>
-        <td id="link"><a href="../matches/{{this._id}}">link</a></td>
+        <td class="link"><a href="../matches/{{this._id}}">link</a></td>
         {{!Add a tournamentplayed field}}
     </tr>    
     {{/each}}
 </table>
-<label class="noResult" hidden="true">There are no results, please try again with a different query</label>
+<label class="noResult" hidden>There are no results, please try again with a different query</label>

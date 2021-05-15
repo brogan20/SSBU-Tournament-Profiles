@@ -3,23 +3,25 @@
 <head>
     <meta charset="utf-8">
     <title>{{pageTitle}}</title>
+    <link rel="stylesheet" href="/public/css/style.css">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
     crossorigin="anonymous"></script>
 </head>
 <body>
-	<h1>{{pageTitle}}</h1>
+	<h1>SSBU Tournament Profiles</h1>
 	<main>
         {{#unless landing}}
         <a href="/">Main page</a>
         <a href="/characters">Character Profiles</a>
         <a href="/users">User Lookup</a>
         <a href="/matches">All Matches</a>
-        {{/unless}}
         {{#if loggedIn}}
         <p>{{greeting}}</p>
         {{else}}
         <a href="/login">Log In</a>
         {{/if}}
+        <h1>{{pageTitle}}</h1>
+        {{/unless}}
 	    {{{body}}}
 	</main>
 </body>
