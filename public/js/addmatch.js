@@ -4,7 +4,7 @@
         let temp = $(location).attr('href').split('/');
         var requestConfig = {
             method: 'POST',
-            url: temp[3] == "tournaments" ? `/${temp[3]}/${temp[4]}`: temp[3],
+            url: temp[3] == "tournaments" ? `/${temp[3]}/${temp[4]}`: `/${temp[3]}`,
             data: {
                 winner: $("#winner").val(),
                 loser: $("#loser").val(),
@@ -13,9 +13,7 @@
             }
         };
 
-        console.log(requestConfig);
         $.ajax(requestConfig).then(function(responseMessage) {
-            console.log(responseMessage)
             if(responseMessage.comment){
                 alert(responseMessage.comment);
             }

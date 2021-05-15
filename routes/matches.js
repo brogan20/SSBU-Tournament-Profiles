@@ -41,6 +41,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     let matchInfo = req.body;
+    let winner;
+    let loser;
     if (!matchInfo) {
         res.json({comment: "Match info not supplied"})
         return;
@@ -50,7 +52,7 @@ router.post('/', async (req, res) => {
         return;
     }
     try{
-        await userData.getOneUser(matchInfo.winner)
+        winner = await userData.getOneUser(matchInfo.winner)
     } catch(e){
         res.json({comment: "Winner is not in our database"})
         return;
@@ -61,7 +63,7 @@ router.post('/', async (req, res) => {
         return;
     }
     try{
-        await userData.getOneUser(matchInfo.loser)
+        loser = await userData.getOneUser(matchInfo.loser)
     } catch(e){
         res.json({comment: "Loser is not in our database"})
         return;
@@ -87,10 +89,11 @@ router.post('/', async (req, res) => {
         let winnerPlayed = charData.charNameMapReverse[matchInfo.winnerPlayed] ? charData.charNameMapReverse[matchInfo.winnerPlayed]: matchInfo.winnerPlayed
         let loserPlayed = charData.charNameMapReverse[matchInfo.loserPlayed] ? charData.charNameMapReverse[matchInfo.loserPlayed]: matchInfo.loserPlayed
 
-        const match = await matchData.addMatch(matchInfo.winner, matchInfo.loser, winnerPlayed, loserPlayed)
+        const match = await matchData.addMatch(winner.displayName, loser.displayName, winnerPlayed, loserPlayed)
 
         res.status(200).json({...match, winnerPlayedDisplay: charData.charNameMap[winnerPlayed], loserPlayedDisplay: charData.charNameMap[loserPlayed]});
     } catch (e) {
+        console.log(e)
         res.json({comment: e})
         return;
     }
