@@ -5,6 +5,7 @@ const data = require('../data');
 const tournamentData = data.tournaments;
 const matchData = data.matches
 const charData = data.characters
+const userData = data.users
 
 router.get('/', async (req, res) => {
     try {
@@ -68,9 +69,21 @@ router.post('/:id', async (req, res) => {
         res.json({comment: "Winner not supplied"})
         return;
     }
+    try{
+        await userData.getOneUser(matchInfo.winner)
+    } catch(e){
+        res.json({comment: "Winner is not in our database"})
+        return;
+    }
     if (!matchInfo.loser || typeof matchInfo.loser != 'string') {
         res.render('others/400error', {pageTitle: "400", error: "Loser not supplied"});
         res.json({comment: "Loser not supplied"})
+        return;
+    }
+    try{
+        await userData.getOneUser(matchInfo.loser)
+    } catch(e){
+        res.json({comment: "Loser is not in our database"})
         return;
     }
     if (!matchInfo.winnerPlayed || typeof matchInfo.winnerPlayed != 'string') {
