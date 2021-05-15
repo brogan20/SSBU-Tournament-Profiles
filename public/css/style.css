@@ -3,6 +3,7 @@ html {
 }
 
 #matchTable {    
+    margin-top: 20px;
     border-collapse: collapse;
 }
 
@@ -18,6 +19,7 @@ tr:nth-child(even){background-color: #f2f2f2;}
     background-color: lightcoral;
     min-width: 100px;
 }
+
 #characterList {
     border-collapse: collapse;
     margin-top: 20px;
@@ -26,7 +28,6 @@ tr:nth-child(even){background-color: #f2f2f2;}
 
 #characterList td {
     font-size: 29px;
-    
 }
 
 #characterList tr.row td{
@@ -36,6 +37,23 @@ tr:nth-child(even){background-color: #f2f2f2;}
 }
 
 #characterList th {
+    background-color: lightcoral;
+    border: solid black 1px;
+}
+
+#userList {
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: solid black 1px;
+}
+
+#userList tr.row td{
+    border-collapse: collapse;
+    border: solid black 1px;
+    min-width: 120px;
+}
+
+#userList th {
     background-color: lightcoral;
     border: solid black 1px;
 }

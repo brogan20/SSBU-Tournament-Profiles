@@ -1,5 +1,5 @@
 <h1>{{character.displayName}}</h1>
-<img src="/public/images/{{character.abrvName}}.png">
+<img src="/public/images/{{character.abrvName}}.png" alt="{{character.abrvName}}">
 <div class="tab">
     <button class="tablinks" onclick="openPage(event, 'stat')">Statistics</button> {{!might neeed to change this later}}
     <button class="tablinks" onclick="openPage(event, 'match')">Matches</button>
@@ -9,8 +9,10 @@
 <div id="stat" class="tabcontent">
     <h3>Character Statistics</h3>
     <table>
-        <th>Wins</th>
-        <th>Losses</th>
+        <tr>
+            <th>Wins</th>
+            <th>Losses</th>
+        </tr>
         <tr>
             <td>{{wins}}</td>
             <td>{{losses}}</td>
@@ -21,8 +23,10 @@
 <div id="match" class="tabcontent" hidden>
     <h3>Recent Matches</h3>
     <table id="matchTable">
-        <th>Winner</th>
-        <th>Loser</th>
+        <tr>
+            <th>Winner</th>
+            <th>Loser</th>
+        </tr>
         {{#each matches}}
         <tr class="match">
             <td class="winner">

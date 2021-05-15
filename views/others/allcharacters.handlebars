@@ -5,15 +5,15 @@
     <input type="text" name ="search_term" id="search_term">
     <button class="search">Search</button>
 </form>
-<button class="clearResults" hidden="true">Clear Results</button>
+<button class="clearResults" hidden>Clear Results</button>
 <table id="characterList">
     <tr class="header">
         <th class="sortButton">Name</th>
     </tr>
     {{#each characters}}
         <tr class="row">
-            <td class="Name"><img class='head' src="../../public/imageheads/{{this.abrvName}}.png"><a href="/characters/{{this.abrvName}}">{{this.displayName}}</a></td>
+            <td class="Name"><img class='head' src="../../public/imageheads/{{this.abrvName}}.png" alt="{{this.abrvName}}"><a href="/characters/{{this.abrvName}}">{{this.displayName}}</a></td>
         </tr>
     {{/each}}
 </table>
-<label class="noResult" hidden="true">There are no results, please try again with a different query</label>
+<label class="noResult" hidden>There are no results, please try again with a different query</label>
