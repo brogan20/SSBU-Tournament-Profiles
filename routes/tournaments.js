@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const tournamentData = data.tournaments;
+const matchData = data.matches
+const charData = data.characters
 
 router.get('/', async (req, res) => {
     try {
@@ -20,7 +22,36 @@ router.get('/:id', async (req, res) => {
         res.render('others/404error', {pageTitle: "404", error: `Tournament ${req.params.id} not found`});
         return;
     }
-    res.render('others/tournament', {pageTitle: `Tournament: ${req.params.id}`, tournament: tournament});
+
+    let matches;
+    let users;
+    let mostPlayed;
+    for(const elem of tournament.players){
+        users[elem] = [0,0]
+        mostPlayed[elem]
+    }
+    for(const elem of tournament.matches){
+        try{
+            let match = await matchData.getMatch(elem.toString());
+            match.winnerPlayedDisplay = charData.charNameMap[match.winnerPlayed]
+            match.loserPlayedDisplay = charData.charNameMap[match.loserPlayed]
+            users[match.winner][0] += 1;
+            users[match.loser][1] += 1;
+            mostPlayed[match.winner][match.winnerPlayed] = mostPlayed[match.winner].hasOwnProperty(match.winnerPlayed) ? mostPlayed[match.winner][match.winnerPlayed] += 1 : 1
+            matches.push(match);
+        }
+        catch{
+            continue;
+        }
+    }
+
+    for(const elem of mostPlayed){
+        elem["final"] = elem.entries().reduce((a,b) => a[1] > b[1] ? a : b)[0];
+    }
+    for(elem of users){
+        elem[3] = elem[0]/(elem[0] + elem[1]);
+    }
+    res.render('others/tournament', {pageTitle: `Tournament: ${req.params.id}`, tournament: tournament, users: users, matches: matches});
 });
 
 router.post('/', async (req, res) => {
