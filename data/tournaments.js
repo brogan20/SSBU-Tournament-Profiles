@@ -89,7 +89,7 @@ async function addMatchToTournament(tournamentId, matchId) {
     if (!matchId || typeof matchId !== "string" || !matchId.trim()) {
         throwErr("addMatchToTournament", "Must be given matchId");
     }
-    let mid = ObjectId(matchId);
+    ObjectId(matchId);
 
     // Check match exists
     try {
@@ -105,7 +105,7 @@ async function addMatchToTournament(tournamentId, matchId) {
         throwErr("addMatchToTournament", "Could not find given tournament");
     }
 
-    tournyCheck.matches.push(mid);
+    tournyCheck.matches.push(matchId);
     delete tournyCheck._id;
 
     const updateTournament = await tournamentDB.updateOne({ _id: tid }, { $set: tournyCheck });
