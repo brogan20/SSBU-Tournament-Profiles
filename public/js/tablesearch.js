@@ -2,6 +2,7 @@
     function searchTable(searchTerm){
         let hideCount = 0
         let showCount = 0
+        $(".header").show()
         $("tr").not(".header").each(function(){
             //Uses the built in includes function to check if the result should be shown
             let found = false;
