@@ -1,5 +1,5 @@
 const connection = require('./mongoConnection');
-
+const bcrypt = require('bcrypt');
 const matches = require('../data/matches');
 const characters = require('../data/characters');
 const users = require('../data/users');
@@ -124,14 +124,16 @@ async function runSetup() {
   let tourney1 = await tournaments.addTournament('Tournament1', ['RobotWizard', "Shinks", "pencilman", "brogan20", "DoctorFlopper", "TheRock1211", "lempie", "p0ptartlov3r"])
   let tourney2 = await tournaments.addTournament('Tournament2 (missing lempie)', ['RobotWizard', "Shinks", "pencilman", "brogan20", "DoctorFlopper", "TheRock1211", "p0ptartlov3r"])
   let tourney3 = await tournaments.addTournament('Tournament3', ['RobotWizard', "Shinks", "pencilman", "brogan20", "DoctorFlopper", "TheRock1211", "lempie", "p0ptartlov3r"])
-  await users.addUser('RobotWizard', 'Password1');
-  await users.addUser('Shinks', 'Password2');
-  await users.addUser('brogan20', 'Password3');
-  await users.addUser('pencilman', 'Password4');
-  await users.addUser('DoctorFlopper', 'Password5');
-  await users.addUser('TheRock1211', 'Password6');
-  await users.addUser('lempie', 'Password7');
-  await users.addUser('p0ptartlov3r', 'Password8');
+
+  const saltRounds = 10;
+  await users.addUser('RobotWizard', await bcrypt.hash('Password1',saltRounds));
+  await users.addUser('Shinks', await bcrypt.hash('Password1',saltRounds));
+  await users.addUser('brogan20', await bcrypt.hash('Password1',saltRounds));
+  await users.addUser('pencilman', await bcrypt.hash('Password1',saltRounds));
+  await users.addUser('DoctorFlopper', await bcrypt.hash('Password1',saltRounds));
+  await users.addUser('TheRock1211', await bcrypt.hash('Password1',saltRounds));
+  await users.addUser('lempie', await bcrypt.hash('Password1',saltRounds));
+  await users.addUser('p0ptartlov3r', await bcrypt.hash('Password1',saltRounds));
 
   //TOURNAMENT 1
   await matches.addMatch('pencilman', 'DoctorFlopper', 'donkeykong', 'mario').then((temp) => tournaments.addMatchToTournament(tourney1._id.toString(), temp._id));

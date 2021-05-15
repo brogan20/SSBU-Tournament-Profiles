@@ -3,7 +3,6 @@ const router = express.Router();
 const data = require('../data');
 const charData = data.characters
 const matchData = data.matches;
-const commentData = data.comments;
 
 router.get('/', async (req, res) => {
     try {
@@ -67,23 +66,23 @@ router.post('/', async (req, res) => {
 router.post('/:id', async (req, res) => {
     let commentInfo = req.body;
     if (!commentInfo) {
-        res.render('others/400error', {pageTitle: "400", error: "Comment info not supplied"});
+        res.status(200).json({comment: "Comment info not supplied"})
         return;
     }
-    if (!commentInfo.poster || typeof commentInfo.poster !== 'string') {
-        res.render('others/400error', {pageTitle: "400", error: "Comment poster not supplied"});
+    if (!commentInfo.poster || typeof commentInfo.poster != 'string') {
+        res.status(200).json({comment: "Comment poster not supplied"})
         return;
     }
-    if (!commentInfo.comment || typeof commentInfo.comment !== 'string') {
-        res.render('others/400error', {pageTitle: "400", error: "Comment content not suppied"});
+    if (!commentInfo.comment || typeof commentInfo.comment != 'string') {
+        res.status(200).json({comment: "Comment content not supplied"})
         return;
     }
 
     try {
-        const comment = await commentData.addComment(commentInfo.poster, commentInfo.comment);
-        res.status(200).json(comment);
+        const comment = await matchData.addComment(req.params.id, commentInfo.poster, commentInfo.comment);
+        res.status(200).json({poster: commentInfo.poster, content: commentInfo.comment});
     } catch (e) {
-        res.render('others/400error', {pageTitle: "400", error: "Failed to add comment"});
+        res.status(200).json({comment: "Failed to add comment"})
         return;
     }
 });

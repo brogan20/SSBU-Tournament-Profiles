@@ -2,15 +2,15 @@ const userRoutes = require('./users');
 const characterRoutes = require('./characters');
 const matchRoutes = require('./matches');
 const tournamentRoutes = require('./tournaments');
+const loginRoutes = require('./login');
 
 const constructorMethod = (app) => {
   app.use('/users', userRoutes);
   app.use('/characters', characterRoutes);
   app.use('/matches', matchRoutes);
   app.use('/tournaments', tournamentRoutes);
-  app.get('/login',(req, res) => {
-    res.render('others/login', {pageTitle: 'Login'});
-  })
+  app.use('/login', loginRoutes);
+
   app.get('/', (req, res) => {
     res.render('others/landing', {pageTitle: 'SSBU Tournament Profiles', landing: true});
   });

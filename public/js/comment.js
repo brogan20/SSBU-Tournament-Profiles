@@ -4,12 +4,20 @@
         let temp = $(location).attr('href').split('/');
         var requestConfig = {
             method: 'POST',
-            url: `${temp[3]}/${temp[4]}`
+            url: `/${temp[3]}/${temp[4]}`,
+            data: {
+                poster: $("#poster").val(),
+                comment: $("#comment").val()
+            }
         };
 
         $.ajax(requestConfig).then(function(responseMessage) {
-            var newElement = $(responseMessage);
-            console.log(newElement);
+            if(responseMessage.comment){
+                alert(responseMessage.comment);
+            }
+            else{
+                $(".matchComments").append(`<dt>${responseMessage.poster}</dt><dd>${responseMessage.content}</dd>`)
+            }
         })
     });
 })(jQuery)
