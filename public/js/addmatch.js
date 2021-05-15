@@ -1,6 +1,22 @@
 (function($){
     $(document).on('click','.submitMatch', function(event) {
         event.preventDefault();
+        if(!$("#winner").val() || !(typeof $("#winner").val() == "string") || !$("#winner").val().trim()){
+            alert("Please fill in the winner field with a valid term");
+            return;
+        }
+        if(!$("#loser").val() || !(typeof $("#loser").val() == "string") || !$("#loser").val().trim()){
+            alert("Please fill in the lose field with a valid term");
+            return;
+        }
+        if(!$("#winnerPlayed").val() || !(typeof $("#winnerPlayed").val() == "string") || !$("#winnerPlayed").val().trim()){
+            alert("Please fill in the winner's character field with a valid term");
+            return;
+        }
+        if(!$("#loserPlayed").val() || !(typeof $("#loserPlayed").val() == "string") || !$("#loserPlayed").val().trim()){
+            alert("Please fill in the loser's character field with a valid term");
+            return;
+        }
         let temp = $(location).attr('href').split('/');
         var requestConfig = {
             method: 'POST',

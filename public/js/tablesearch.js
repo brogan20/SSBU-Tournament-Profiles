@@ -30,6 +30,10 @@
     //Base case, makes a query based on the search term
     $(document).on("click",".search",function(event) {
         event.preventDefault()
+        if(!$("#search_term").val() || !(typeof $("#search_term").val() == "string") || !$("#search_term").val().trim()){
+            alert("Please fill in the search box with a term");
+            return;
+        }
         searchTable($("#search_term").val())
     })
     
