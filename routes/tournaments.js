@@ -5,22 +5,24 @@ const tournamentData = data.tournaments;
 const matchData = data.matches
 const charData = data.characters
 const userData = data.users
+const xss = require('xss');
+
 
 router.get('/', async (req, res) => {
     try {
         var tournaments = await tournamentData.getAllTournaments();
     } catch (e) {
-        res.render('others/404error', {pageTitle: "404", username: req.session.user, error: "Tournaments not found"});
+        res.render('others/404error', {pageTitle: "404", username: xss(req.session.user), error: "Tournaments not found"});
         return;
     }
-    res.render('others/alltournaments', {pageTitle: "Tournament Profiles", username: req.session.user, tournaments: tournaments});
+    res.render('others/alltournaments', {pageTitle: "Tournament Profiles", username: xss(req.session.user), tournaments: tournaments});
 });
 
 router.get('/:id', async (req, res) => {
     try {
-        var tournament = await tournamentData.getOneTournament(req.params.id);
+        var tournament = await tournamentData.getOneTournament(xss(req.params.id));
     } catch (e) {
-        res.render('others/404error', {pageTitle: "404", username: req.session.user, error: `Tournament ${req.params.id} not found`});
+        res.render('others/404error', {pageTitle: "404", username: xss(req.session.user), error: `Tournament ${xss(req.params.id)} not found`});
         return;
     }
 
@@ -43,7 +45,7 @@ router.get('/:id', async (req, res) => {
             matches.push(match);
         }
         catch(e){
-            continue;
+
         }
     }
 
@@ -55,7 +57,7 @@ router.get('/:id', async (req, res) => {
     }
 
     users = Object.entries(users).sort((a,b) => b[1][0] - a[1][0]);
-    res.render('others/tournament', {pageTitle: `Tournament: ${tournament.name}`, username: req.session.user, tournament: tournament, users: users, matches: matches});
+    res.render('others/tournament', {pageTitle: `Tournament: ${tournament.name}`, username: xss(req.session.user), tournament: tournament, users: users, matches: matches});
 });
 
 router.post('/:id', async (req, res) => {
@@ -66,28 +68,28 @@ router.post('/:id', async (req, res) => {
         res.json({comment: "Match info not supplied"})
         return;
     }
-    if (!matchInfo.winner || typeof matchInfo.winner != 'string') {
+    if (!xss(matchInfo.winner) || typeof xss(matchInfo.winner) != 'string') {
         res.json({comment: "Winner not supplied"})
         return;
     }
     try{
-        winner = await userData.getOneUser(matchInfo.winner)
+        winner = await userData.getOneUser(xss(matchInfo.winner))
     } catch(e){
         res.json({comment: "Winner is not in our database"})
         return;
     }
-    if (!matchInfo.loser || typeof matchInfo.loser != 'string') {
-        res.render('others/400error', {pageTitle: "400", username: req.session.user, error: "Loser not supplied"});
+    if (!xss(matchInfo.loser) || typeof xss(matchInfo.loser) != 'string') {
+        res.render('others/400error', {pageTitle: "400", username: xss(req.session.user), error: "Loser not supplied"});
         res.json({comment: "Loser not supplied"})
         return;
     }
     try{
-        loser = await userData.getOneUser(matchInfo.loser)
+        loser = await userData.getOneUser(xss(matchInfo.loser))
     } catch(e){
         res.json({comment: "Loser is not in our database"})
         return;
     }
-    if (!matchInfo.winnerPlayed || typeof matchInfo.winnerPlayed != 'string') {
+    if (!xss(matchInfo.winnerPlayed) || typeof xss(matchInfo.winnerPlayed) != 'string') {
         res.json({comment: "Character played by winner not supplied"})
         return;
     }
@@ -99,11 +101,11 @@ router.post('/:id', async (req, res) => {
         res.json({comment: "Character played by loser does not exist"})
         return;
     }
-    if (!matchInfo.loserPlayed || typeof matchInfo.loserPlayed != 'string') {
+    if (!xss(matchInfo.loserPlayed) || typeof xss(matchInfo.loserPlayed) != 'string') {
         res.json({comment: "Character played by loser not supplied"})
         return;
     }
-    if (req.session.user != winner.displayName && req.session.user != loser.displayName){
+    if (xss(req.session.user) !== xss(winner.displayName) && xss(req.session.user) !== xss(loser.displayName)){
         res.json({comment: "You can only report a match you played in"})
         return;
     }
@@ -123,7 +125,7 @@ router.post('/:id', async (req, res) => {
         res.status(200).json({...match, winnerPlayedDisplay: charData.charNameMap[winnerPlayed], loserPlayedDisplay: charData.charNameMap[loserPlayed]});
     } catch (e) {
         res.json({comment: e})
-        return;
+
     }
 });
 

@@ -2,24 +2,28 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const userData = require('../data/users.js');
-const path = require('path');
+// const path = require('path');
+const xss = require('xss');
+
 //const saltRounds = 9;
 
 
 router.get('/', async (req, res) => {
-    if (req.session.user) {
+    if (xss(req.session.user)) {
         res.redirect("/")
     } else {
-        if (req.session.error) {
-            res.status(401).render('others/login', {pageTitle: 'Login', error: req.session.error});
+        if (xss(req.session.error)) {
+            res.status(401).render('others/login', {pageTitle: 'Login', error: xss(req.session.error)});
         } else {
-            res.render('others/login', {pageTitle: 'Login', error: req.session.error});
+            res.render('others/login', {pageTitle: 'Login', error: xss(req.session.error)});
         }
     }
 });
 
 router.post('/', async (req, res) =>{
-    const {username, password} = req.body;
+    const username = xss(req.body.username);
+    const password = xss(req.body.password);
+
     try{
         var user = await userData.getOneUser(username);
     } catch(e){
@@ -27,7 +31,7 @@ router.post('/', async (req, res) =>{
         res.redirect('/login');
         return;
     }
-    let match = await bcrypt.compare(password, user.hashedPassword);
+    let match = await bcrypt.compare(password, xss(user.hashedPassword));
     if (match) {
         req.session.error = false;
         req.session.user = username;

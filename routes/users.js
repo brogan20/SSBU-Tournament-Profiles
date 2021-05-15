@@ -3,22 +3,23 @@ const router = express.Router();
 const data = require('../data');
 const userData = data.users;
 const charData = data.characters;
+const xss = require('xss');
 
 router.get('/', async (req, res) => {
     try {
         var users = await userData.getAllUsers();
     } catch (e) {
-        res.render('others/404error', {pageTitle: "404", username: req.session.user, error: "Users not found"});
+        res.render('others/404error', {pageTitle: "404", username: xss(req.session.user), error: "Users not found"});
         return;
     }
-    res.render('others/allusers', {pageTitle: "User Profiles", username: req.session.user, users: users});
+    res.render('others/allusers', {pageTitle: "User Profiles", username: xss(req.session.user), users: users});
 });
 
 router.get('/:id', async (req, res) => {
     try {
         var user = await userData.getOneUser(req.params.id);
     } catch (e) {
-        res.render('others/404error', {pageTitle: "404", username: req.session.user, error: `User ${req.params.id} not found`});
+        res.render('others/404error', {pageTitle: "404", username: xss(req.session.user), error: `User ${xss(req.params.id)} not found`});
         return;
     }
 
@@ -46,30 +47,30 @@ router.get('/:id', async (req, res) => {
         }
     }
 
-    res.render('others/user', {pageTitle: `User: ${user.displayName}`, username: req.session.user, mostPlayed: mostPlayed, user: user, wins: wins, losses: losses, rival: rival});
+    res.render('others/user', {pageTitle: `User: ${user.displayName}`, username: xss(req.session.user), mostPlayed: mostPlayed, user: user, wins: wins, losses: losses, rival: rival});
 });
 
 router.post('/', async (req, res) => {
     let userInfo = req.body;
     if (!userInfo) {
-        res.render('others/400error', {pageTitle: "400", username: req.session.user, error: "User info not supplied"});
+        res.render('others/400error', {pageTitle: "400", username: xss(req.session.user), error: "User info not supplied"});
         return;
     }
-    if (!userInfo.displayName || typeof userInfo.display !== 'string') {
-        res.render('others/400error', {pageTitle: "400", username: req.session.user, error: "Username not supplied"});
+    if (!xss(userInfo.displayName) || typeof xss(userInfo.display) !== 'string') {
+        res.render('others/400error', {pageTitle: "400", username: xss(req.session.user), error: "Username not supplied"});
         return;
     }
-    if (!userInfo.hashedPassword || typeof userInfo.hashedPassword !== 'string') {
-        res.render('others/400error', {pageTitle: "400", username: req.session.user, error: "Password not supplied"});
+    if (!xss(userInfo.hashedPassword) || typeof xss(userInfo.hashedPassword) !== 'string') {
+        res.render('others/400error', {pageTitle: "400", username: xss(req.session.user), error: "Password not supplied"});
         return;
     }
 
     try {
-        const user = await userData.addUser(userInfo.displayName, userInfo.hashedPassword);
+        const user = await userData.addUser(xss(userInfo.displayName), xss(userInfo.hashedPassword));
         res.status(200).json(user);
     } catch(e) {
-        res.render('others/400error', {pageTitle: "400", username: req.session.user, error: "Failed to add user"});
-        return;
+        res.render('others/400error', {pageTitle: "400", username: xss(req.session.user), error: "Failed to add user"});
+
     }
 });
 

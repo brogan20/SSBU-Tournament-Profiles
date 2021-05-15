@@ -3,6 +3,7 @@ const characterRoutes = require('./characters');
 const matchRoutes = require('./matches');
 const tournamentRoutes = require('./tournaments');
 const loginRoutes = require('./login');
+const xss = require('xss');
 
 const constructorMethod = (app) => {
   app.use('/users', userRoutes);
@@ -12,7 +13,7 @@ const constructorMethod = (app) => {
   app.use('/login', loginRoutes);
 
   app.get('/', (req, res) => {
-    res.render('others/landing', {pageTitle: 'Home', landing: true, username: req.session.user});
+    res.render('others/landing', {pageTitle: 'Home', landing: true, username: xss(req.session.user)});
   });
   app.use('*', (req, res) => {
     res.render('others/404error', {pageTitle: '404', error: 'This page does not exist'});
