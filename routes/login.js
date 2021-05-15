@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const userData = require('../data/users.js');
 const xss = require('xss');
 
+let saltRounds = 10;
 
 router.get('/', async (req, res) => {
     if (xss(req.session.user)) {
@@ -49,6 +50,33 @@ router.post('/', async (req, res) =>{
         req.session.error = true;
         res.redirect('/login');
     } 
+});
+
+router.post('/signup', async (req, res) =>{
+    const username = xss(req.body.username);
+    const password = xss(req.body.password);
+
+    if (!username || typeof username !== 'string' || !username.trim()) {
+        req.session.error = "Not a Valid Username";
+        res.redirect('/login/signup');
+        return;
+    }
+    if (!password || typeof password !== 'string' || !password.trim()) {
+        req.session.error = "Not a Valid Password";
+        res.redirect('/login/signup');
+        return;
+    }
+    try {
+        await userData.addUser(username, await bcrypt.hash(password, saltRounds));
+    }
+    catch(e) {
+        req.session.error = "username already exists";
+        res.redirect('/login/signup');
+        return;
+    }
+    req.session.error = false;
+    req.session.user = username;
+    res.redirect('/');
 });
 
 router.get('/logout', async(req, res) => {
