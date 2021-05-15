@@ -1,5 +1,19 @@
 <script src="/public/js/tablesorts.js"></script>
 <script src="/public/js/tablesearch.js"></script>
+<script src="/public/js/addmatch.js"></script>
+<h1>Report a Match</h1>
+<form class="reportMatch">
+    <label for="winner">Winner</label>
+    <input type="text" name ="winner" id="winner">
+    <label for="winnerPlayed">Winner's Character</label>
+    <input type="text" name ="winnerPlayed" id="winnerPlayed"> <br>
+
+    <label for="loser">Loser</label>
+    <input type="text" name ="loser" id="loser">
+    <label for="loserPlayed">Loser's Character</label>
+    <input type="text" name ="loserPlayed" id="loserPlayed"> <br>
+    <button class="submitMatch">Submit</button>
+</form>
 <form class="searchForm">
     <label for="search_term">Search Term</label>
     <input type="text" name ="search_term" id="search_term">
@@ -10,6 +24,7 @@
     <tr class="header">
         <th class="sortButton">Winner</th>
         <th class="sortButton">Loser</th>
+        <th class="sortButton">Tournament</th>
         <th>comments</th>
     </tr>
     {{#each matches}}
@@ -21,6 +36,14 @@
         <td class="Loser">
             <a href="../users/{{this.loser}}">{{this.loser}}</a>
             (<a href="../characters/{{this.loserPlayed}}">{{this.loserPlayedDisplay}}</a>)
+        </td>
+        <td class="Tournament">
+            {{#if this.tourney}}
+            <a href="../tournaments/{{this.tourney._id}}">{{this.tourney.name}}</a>
+            {{else}}
+            <p>N/A</p>
+            {{/if}}
+        </td
         </td>
         <td class="link excludeFromSearch"><a href="../matches/{{this._id}}">link</a></td>
         {{!Add a tournamentplayed field}}

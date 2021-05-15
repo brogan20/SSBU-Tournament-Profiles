@@ -1,7 +1,7 @@
 const matches = require("../config/mongoCollections").matches;
 let {ObjectId} = require("mongodb");
 let users = require("./users");
-let chracters = require("./characters");
+let characters = require("./characters");
 
 /**
  *  winner: string
@@ -57,7 +57,7 @@ async function addMatch(winner, loser, winnerPlayed, loserPlayed) {
     }
 
     await users.addMatch(winner, loser, winnerPlayed, loserPlayed);
-    await chracters.addMatch(winnerPlayed, loserPlayed);
+    await characters.addMatch(winnerPlayed, loserPlayed);
 
     return await getMatch(insertInfo.insertedId.toString());
 }

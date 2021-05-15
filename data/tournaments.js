@@ -67,6 +67,20 @@ async function getAllTournaments() {
     return tournamentsFound;
 }
 
+async function findMatchTournament(matchId){
+    if (!matchId || typeof matchId !== "string" || !matchId.trim()){
+        throwErr("findMatchTournament", "Must be given matchId");
+    }
+
+    await checkDB();
+
+    let findTourny = await tournamentDB.findOne({matches: {$in: [ObjectId(matchId)]}});
+    if (!findTourny) return undefined;
+
+    findTourny._id = findTourny._id.toString();
+    return findTourny;
+}
+
 async function addMatchToTournament(tournamentId, matchId) {
     if (!tournamentId || typeof tournamentId !== "string" || !tournamentId.trim()) {
         throwErr("addMatchToTournament", "Must be given tournamentId");
@@ -95,7 +109,7 @@ async function addMatchToTournament(tournamentId, matchId) {
     delete tournyCheck._id;
 
     const updateTournament = await tournamentDB.updateOne({ _id: tid }, { $set: tournyCheck });
-    if (updateTournament.matchedCount === 0)
+    if (updateTournament.modifiedCount === 0)
         throwErr("addMatchToTournament", "Could not update tournament");
 
     return tournyCheck;
@@ -105,5 +119,6 @@ module.exports = {
     addTournament,
     getOneTournament,
     getAllTournaments,
+    findMatchTournament,
     addMatchToTournament
 };

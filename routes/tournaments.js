@@ -1,4 +1,5 @@
 const express = require('express');
+const { matches } = require('../config/mongoCollections');
 const router = express.Router();
 const data = require('../data');
 const tournamentData = data.tournaments;
@@ -57,26 +58,49 @@ router.get('/:id', async (req, res) => {
     res.render('others/tournament', {pageTitle: `Tournament: ${tournament.name}`, tournament: tournament, users: users, matches: matches});
 });
 
-router.post('/', async (req, res) => {
-    let tournamentInfo = req.body;
-    if (!tournamentInfo) {
-        res.render('others/400error', {pageTitle: "400", error: "Tournament info not supplied"});
+router.post('/:id', async (req, res) => {
+    let matchInfo = req.body;
+    if (!matchInfo) {
+        res.json({comment: "Match info not supplied"})
         return;
     }
-    if (!tournamentInfo.matches || !Arrays.isArray(tournamentInfo.matches)) {
-        res.render('others/400error', {pageTitle: "400", error: "Tournament matches not supplied"});
+    if (!matchInfo.winner || typeof matchInfo.winner != 'string') {
+        res.json({comment: "Winner not supplied"})
         return;
     }
-    if (!tournamentInfo.players || !Arrays.isArray(tournamentInfo.players)) {
-        res.render('others/400error', {pageTitle: "400", error: "Tournament players not supplied"});
+    if (!matchInfo.loser || typeof matchInfo.loser != 'string') {
+        res.render('others/400error', {pageTitle: "400", error: "Loser not supplied"});
+        res.json({comment: "Loser not supplied"})
+        return;
+    }
+    if (!matchInfo.winnerPlayed || typeof matchInfo.winnerPlayed != 'string') {
+        res.json({comment: "Character played by winner not supplied"})
+        return;
+    }
+    if (!charData.charNameMapReverse[matchInfo.winnerPlayed] && !charData.charNameMap[matchInfo.winnerPlayed]){
+        res.json({comment: "Character played by winner does not exist"})
+        return;
+    }
+    if (!charData.charNameMapReverse[matchInfo.loserPlayed] && !charData.charNameMap[matchInfo.loserPlayed]){
+        res.json({comment: "Character played by loser does not exist"})
+        return;
+    }
+    if (!matchInfo.loserPlayed || typeof matchInfo.loserPlayed != 'string') {
+        res.json({comment: "Character played by loser not supplied"})
         return;
     }
 
     try {
-        const tournament = await tournamentData.getTournament(tournamentInfo.matches, tournamentInfo.players);
-        res.status(200).json(tournament);
+        const tempTournament = await tournamentData.getOneTournament(req.params.id);
+        let winnerPlayed = charData.charNameMapReverse[matchInfo.winnerPlayed] ? charData.charNameMapReverse[matchInfo.winnerPlayed]: matchInfo.winnerPlayed
+        let loserPlayed = charData.charNameMapReverse[matchInfo.loserPlayed] ? charData.charNameMapReverse[matchInfo.loserPlayed]: matchInfo.loserPlayed
+
+        const match = await matchData.addMatch(matchInfo.winner, matchInfo.loser, winnerPlayed, loserPlayed)
+        await tournamentData.addMatchToTournament(tempTournament._id.toString(), match._id)
+
+        res.status(200).json({...match, winnerPlayedDisplay: charData.charNameMap[winnerPlayed], loserPlayedDisplay: charData.charNameMap[loserPlayed]});
     } catch (e) {
-        res.render('others/400error', {pageTitle: "400", error: "Failed to add tournament"});
+        res.json({comment: e})
         return;
     }
 });

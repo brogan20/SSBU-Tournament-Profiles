@@ -1,7 +1,9 @@
 <script src="/public/js/tablesorts.js"></script>
+<script src="/public/js/addmatch.js"></script>
 <div class="tab">
     <button class="tablinks" onclick="openPage(event, 'standings')">Standings</button> {{!might neeed to change this later}}
     <button class="tablinks" onclick="openPage(event, 'allMatches')">All Matches</button>
+    <button class="tablinks" onclick="openPage(event, 'reportMatch')">Report a Match</button>
 </div>
 <div id="standings" class ="tabcontent">
     <h1>Tournament Results</h1>
@@ -28,6 +30,7 @@
     </table>
 </div>
 <div id="allMatches" class ="tabcontent" hidden>
+    <h1>Tournament Matches</h1>
     <table id = "matchTable">
         <tr class="header">
             <th class="sortButton">Winner</th>
@@ -45,10 +48,24 @@
                 (<a href="../characters/{{this.loserPlayed}}">{{this.loserPlayedDisplay}}</a>)
             </td>
             <td class="link excludeFromSearch"><a href="../matches/{{this._id}}">link</a></td>
-            {{!Add a tournamentplayed field}}
         </tr>    
         {{/each}}
     </table>
+</div>
+<div id="reportMatch" class="tabcontent" hidden>
+    <h1>Report a Match</h1>
+    <form class="addComment">
+        <label for="winner">Winner</label>
+        <input type="text" name ="winner" id="winner">
+        <label for="winnerPlayed">Winner's Character</label>
+        <input type="text" name ="winnerPlayed" id="winnerPlayed"> <br>
+
+        <label for="loser">Loser</label>
+        <input type="text" name ="loser" id="loser">
+        <label for="loserPlayed">Loser's Character</label>
+        <input type="text" name ="loserPlayed" id="loserPlayed"> <br>
+        <button class="submitMatch">Submit</button>
+    </form>
 </div>
 
 <script> //make this like not complete garbage

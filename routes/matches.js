@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require('../data');
 const charData = data.characters
 const matchData = data.matches;
+const tournamentData = data.tournaments
 
 router.get('/', async (req, res) => {
     try {
@@ -15,6 +16,12 @@ router.get('/', async (req, res) => {
     for(const elem of matches){
         elem.winnerPlayedDisplay = charData.charNameMap[elem.winnerPlayed]
         elem.loserPlayedDisplay = charData.charNameMap[elem.loserPlayed]
+        try{
+            let temp = await tournamentData.findMatchTournament(elem._id.toString());
+            elem.tourney = temp ? temp : undefined
+        } catch(e){
+            continue;
+        }
     }
     res.render('others/allmatches', {pageTitle: "All Matches", matches: matches});
 });
@@ -34,31 +41,44 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     let matchInfo = req.body;
     if (!matchInfo) {
-        res.render('others/400error', {pageTitle: "400", error: "Match info not supplied"});
+        res.json({comment: "Match info not supplied"})
         return;
     }
     if (!matchInfo.winner || typeof matchInfo.winner != 'string') {
-        res.render('others/400error', {pageTitle: "400", error: "Winner not supplied"});
+        res.json({comment: "Winner not supplied"})
         return;
     }
     if (!matchInfo.loser || typeof matchInfo.loser != 'string') {
         res.render('others/400error', {pageTitle: "400", error: "Loser not supplied"});
+        res.json({comment: "Loser not supplied"})
         return;
     }
     if (!matchInfo.winnerPlayed || typeof matchInfo.winnerPlayed != 'string') {
-        res.render('others/400error', {pageTitle: "400", error: "Character played by winner not supplied"});
+        res.json({comment: "Character played by winner not supplied"})
+        return;
+    }
+    if (!charData.charNameMapReverse[matchInfo.winnerPlayed] && !charData.charNameMap[matchInfo.winnerPlayed]){
+        res.json({comment: "Character played by winner does not exist"})
+        return;
+    }
+    if (!charData.charNameMapReverse[matchInfo.loserPlayed] && !charData.charNameMap[matchInfo.loserPlayed]){
+        res.json({comment: "Character played by loser does not exist"})
         return;
     }
     if (!matchInfo.loserPlayed || typeof matchInfo.loserPlayed != 'string') {
-        res.render('others/400error', {pageTitle: "400", error: "Character played by loser not supplied"});
+        res.json({comment: "Character played by loser not supplied"})
         return;
     }
 
     try {
-        const match = await matchData.addMatch(matchInfo.winner, matchInfo.loser, matchInfo.winnerPlayed, matchInfo.loserPlayed);
-        res.status(200).json(match);
-    } catch(e) {
-        res.render('others/400error', {pageTitle: "400", error: "Failed to add match"});
+        let winnerPlayed = charData.charNameMapReverse[matchInfo.winnerPlayed] ? charData.charNameMapReverse[matchInfo.winnerPlayed]: matchInfo.winnerPlayed
+        let loserPlayed = charData.charNameMapReverse[matchInfo.loserPlayed] ? charData.charNameMapReverse[matchInfo.loserPlayed]: matchInfo.loserPlayed
+
+        const match = await matchData.addMatch(matchInfo.winner, matchInfo.loser, winnerPlayed, loserPlayed)
+
+        res.status(200).json({...match, winnerPlayedDisplay: charData.charNameMap[winnerPlayed], loserPlayedDisplay: charData.charNameMap[loserPlayed]});
+    } catch (e) {
+        res.json({comment: e})
         return;
     }
 });
@@ -66,15 +86,15 @@ router.post('/', async (req, res) => {
 router.post('/:id', async (req, res) => {
     let commentInfo = req.body;
     if (!commentInfo) {
-        res.status(200).json({comment: "Comment info not supplied"})
+        res.json({comment: "Comment info not supplied"})
         return;
     }
     if (!commentInfo.poster || typeof commentInfo.poster != 'string') {
-        res.status(200).json({comment: "Comment poster not supplied"})
+        res.json({comment: "Comment poster not supplied"})
         return;
     }
     if (!commentInfo.comment || typeof commentInfo.comment != 'string') {
-        res.status(200).json({comment: "Comment content not supplied"})
+        res.json({comment: "Comment content not supplied"})
         return;
     }
 
@@ -82,7 +102,7 @@ router.post('/:id', async (req, res) => {
         const comment = await matchData.addComment(req.params.id, commentInfo.poster, commentInfo.comment);
         res.status(200).json({poster: commentInfo.poster, content: commentInfo.comment});
     } catch (e) {
-        res.status(200).json({comment: "Failed to add comment"})
+        res.json({comment: "Failed to add comment"})
         return;
     }
 });

@@ -1,5 +1,6 @@
 const characters = require("../config/mongoCollections").characters;
 var charNameMap = {};
+var charNameMapReverse = {};
 
 // Entry layout:
 /**
@@ -69,6 +70,7 @@ async function addChar(displayName, abrvName) {
 		losses: {},
 	};
 	charNameMap[abrvName] = displayName;
+	charNameMapReverse[displayName] = abrvName;
 
 	const insertInfo = await charDB.insertOne(newChar);
 	if (insertInfo.insertedCount === 0) {
@@ -160,4 +162,5 @@ module.exports = {
 	getAllChar,
 	addMatch,
 	charNameMap,
+	charNameMapReverse
 };
