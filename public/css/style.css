@@ -57,3 +57,70 @@ tr:nth-child(even){background-color: #f2f2f2;}
     background-color: lightcoral;
     border: solid black 1px;
 }
+
+#tournamentTable {
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: solid black 1px;
+}
+
+#tournamentTable tr td{
+    border-collapse: collapse;
+    border: solid black 1px;
+    width: 230px;
+}
+
+#tournamentTable th {
+    background-color: lightcoral;
+    border: solid black 1px;
+}
+
+table.standings {
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: solid black 1px;
+}
+
+table.standings tr td{
+    border-collapse: collapse;
+    border: solid black 1px;
+}
+
+table.standings th {
+    background-color: lightcoral;
+    border: solid black 1px;
+}
+
+table.standings td.Player{
+    font-size: 20px;
+}
+
+a.header {
+    margin-left: 10px;
+}
+
+fieldset.small {
+    display: inline;
+    width: 250px;
+    border: none;
+    padding: 0%;
+}
+
+fieldset.large {
+    display: inline;
+    width: 320px;
+    border: none;
+    padding: 0%;
+}
+
+fieldset input{
+    float: right;
+}
+
+#title {
+    font-family: Impact;
+}
+
+img.vs {
+    padding-bottom: 100px;
+}

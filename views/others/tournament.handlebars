@@ -54,16 +54,23 @@
 </div>
 <div id="reportMatch" class="tabcontent" hidden>
     <h1>Report a Match</h1>
-    <form class="addComment">
-        <label for="winner">Winner</label>
-        <input type="text" name ="winner" id="winner">
-        <label for="winnerPlayed">Winner's Character</label>
-        <input type="text" name ="winnerPlayed" id="winnerPlayed"> <br>
-
-        <label for="loser">Loser</label>
-        <input type="text" name ="loser" id="loser">
-        <label for="loserPlayed">Loser's Character</label>
-        <input type="text" name ="loserPlayed" id="loserPlayed"> <br>
+    <form class="reportMatch">
+        <fieldset class="small">
+            <label for="winner">Winner</label>
+            <input type="text" name ="winner" id="winner">
+        </fieldset>
+        <fieldset class="large">
+            <label for="winnerPlayed">Winner's Character</label>
+            <input type="text" name ="winnerPlayed" id="winnerPlayed">
+        </fieldset><br>
+        <fieldset class="small">
+            <label for="loser">Loser</label>
+            <input type="text" name ="loser" id="loser">
+        </fieldset>
+        <fieldset class="large">
+            <label for="loserPlayed">Loser's Character</label>
+            <input type="text" name ="loserPlayed" id="loserPlayed">
+        </fieldset><br>
         <button class="submitMatch">Submit</button>
     </form>
 </div>

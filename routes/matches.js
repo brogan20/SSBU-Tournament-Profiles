@@ -102,8 +102,9 @@ router.post('/:id', async (req, res) => {
         res.json({comment: "Comment info not supplied"})
         return;
     }
-    if (!commentInfo.poster || typeof commentInfo.poster != 'string') {
-        res.json({comment: "Comment poster not supplied"})
+    if (!req.session.username) {
+        console.log(req.session.username);
+        res.json({comment: "Not Signed In"})
         return;
     }
     if (!commentInfo.comment || typeof commentInfo.comment != 'string') {
@@ -112,7 +113,7 @@ router.post('/:id', async (req, res) => {
     }
 
     try {
-        const comment = await matchData.addComment(req.params.id, commentInfo.poster, commentInfo.comment);
+        const comment = await matchData.addComment(req.params.id, req.session.username, commentInfo.comment);
         res.status(200).json({poster: commentInfo.poster, content: commentInfo.comment});
     } catch (e) {
         res.json({comment: "Failed to add comment"})

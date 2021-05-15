@@ -1,23 +1,15 @@
+<img src="/public/images/{{match.winnerPlayed}}.png" alt="{{match.winnerPlayed}}">
+<img class="vs" src="/public/images/vs.png" alt="vs">
+<img src="/public/images/{{match.loserPlayed}}.png" alt="{{match.loserPlayed}}">
 <h1>{{match.winner}} ({{match.winnerPlayedDisplay}}) defeated {{match.loser}} ({{match.loserPlayedDisplay}})</h1>
-<table id="match">
-    <tr>
-        <th class="winner"><h1>{{match.winner}}</h1></th>
-        <th class="loser"><h1>{{match.loser}}</h1></th>
-    </tr>
-    <tr>
-        <td><img src="/public/images/{{match.winnerPlayed}}.png" alt="{{match.winnerPlayed}}"></td>
-        <td><img src="/public/images/{{match.loserPlayed}}.png" alt="{{match.loserPlayed}}"></td>
-    </tr>
-</table>
 <script src="/public/js/comment.js"></script>
-<form class="addComment">
-    <label for="poster">Poster</label>
-    <input type="text" name ="poster" id="poster">
-
-    <label for="comment">Comment</label>
-    <input type="text" name ="comment" id="comment">
-    <button class="submit">Submit</button>
-</form>
+{{#if username}}
+    <form class="addComment">
+        <label for="comment">Comment</label>
+        <input type="text" name ="comment" id="comment">
+        <button class="submit">Submit</button>
+    </form>
+{{/if}}
 <dl class="matchComments">
 {{#each match.comments}}
     <dt>{{this.username}}</dt>
