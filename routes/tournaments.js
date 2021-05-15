@@ -46,7 +46,7 @@ router.get('/:id', async (req, res) => {
     }
 
     for(const elem in mostPlayed){
-        users[elem][3] = Object.entries(mostPlayed[elem]).reduce((a,b) => a[1] > b[1] ? a : b)[0];
+        users[elem][3] = Object.entries(mostPlayed[elem]).sort((a,b) => a[1] > b[1] ? a : b).slice(2);
     }
     for(const elem in users){
         users[elem][2] =  (Math.round(users[elem][0]/( users[elem][0] +  users[elem][1]) * 1000) / 10).toFixed(2);
