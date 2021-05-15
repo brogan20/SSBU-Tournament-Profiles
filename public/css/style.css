@@ -14,12 +14,10 @@ html {
     padding-top: 12px;
     padding-bottom: 12px;
     background-color: lightcoral;
+    min-width: 200px;
     color: white;
 }
 
 #characterList td {
     font-size: 29px;
 }
-
-
-#c

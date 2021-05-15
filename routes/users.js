@@ -35,19 +35,18 @@ router.get('/:id', async (req, res) => {
         }
         user.userPlayed[elem][2] = (Math.round(user.userPlayed[elem][0] / (user.userPlayed[elem][0] + user.userPlayed[elem][1]) * 1000) / 10).toFixed(2);
     }
-    let mostPlayed;
+    let mostPlayed = "none";
     let numgames = 0;
     for(const elem in user.charPlayed){
         user.charPlayed[elem][2] = (Math.round(user.charPlayed[elem][0] / (user.charPlayed[elem][0] + user.charPlayed[elem][1]) * 1000) / 10).toFixed(2);
         user.charPlayed[elem][3] = charData.charNameMap[elem];
         if (numgames < user.charPlayed[elem][0] + user.charPlayed[elem][1]) {
             numgames =user.charPlayed[elem][0] + user.charPlayed[elem][1];
-            mostPlayed = charData.charNameMap[elem];
+            mostPlayed = elem;
         }
     }
 
-
-    res.render('others/user', {pageTitle: user.displayName, mostPlayed: mostPlayed, user: user, wins: wins, losses: losses, rival: rival});
+    res.render('others/user', {pageTitle: `User: ${user.displayName}`, mostPlayed: mostPlayed, user: user, wins: wins, losses: losses, rival: rival});
 });
 
 router.post('/', async (req, res) => {
