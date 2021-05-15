@@ -22,10 +22,10 @@ router.get('/signup', async (req, res) => {
     if (xss(req.session.user)) {
         res.redirect("/");
     } else {
-        if (xss(req.session.error)) {
-            res.status(401).render('others/signup', {pageTitle: 'Signup', error: xss(req.session.error)});
+        if (xss(req.session.error2)) {
+            res.status(401).render('others/signup', {pageTitle: 'Signup', error: xss(req.session.error2)});
         } else {
-            res.render('others/signup', {pageTitle: 'Signup', error: xss(req.session.error)});
+            res.render('others/signup', {pageTitle: 'Signup', error: xss(req.session.error2)});
         }
     }
 });
@@ -57,12 +57,12 @@ router.post('/signup', async (req, res) =>{
     const password = xss(req.body.password);
 
     if (!username || typeof username !== 'string' || !username.trim()) {
-        req.session.error = "Not a Valid Username";
+        req.session.error2 = "Not a Valid Username";
         res.redirect('/login/signup');
         return;
     }
     if (!password || typeof password !== 'string' || !password.trim()) {
-        req.session.error = "Not a Valid Password";
+        req.session.error2 = "Not a Valid Password";
         res.redirect('/login/signup');
         return;
     }
@@ -70,11 +70,11 @@ router.post('/signup', async (req, res) =>{
         await userData.addUser(username, await bcrypt.hash(password, saltRounds));
     }
     catch(e) {
-        req.session.error = "username already exists";
+        req.session.error2 = "username already exists";
         res.redirect('/login/signup');
         return;
     }
-    req.session.error = false;
+    req.session.error2 = false;
     req.session.user = username;
     res.redirect('/');
 });
