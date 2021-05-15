@@ -64,7 +64,13 @@ async function addMatch(winner, loser, winnerPlayed, loserPlayed) {
 
 async function getAllMatches() {
     if (matchDB === null) matchDB = await matches();
-    return await matchDB.find({}).toArray();
+    let matchesFound = await matchDB.find({}).toArray();
+
+    for (let i = 0; i < matchesFound.length; i++) {
+        matchesFound[i]._id = matchesFound[i]._id.toString();
+    }
+
+    return matchesFound;
 }
 
 async function getMatch(id) {
@@ -108,9 +114,46 @@ async function getMatchesByCharName(charName) {
     return matchesFound;
 }
 
+async function addComment(matchId, username, content) {
+    if (!matchId || typeof matchId !== 'string' || !matchId.trim()) {
+        throwErr("addComment", "Given invalid matchId");
+    }
+    if (!username || typeof username !== 'string' || !username.trim()) {
+        throwErr("addComment", "Given invalid username");
+    }
+    if (!content || typeof content !== 'string' || !content.trim()) {
+        throwErr("addComment", "Given invalid content");
+    }
+
+    let cid = ObjectId();
+
+    let match;
+    try {
+        match = await getMatch(matchId);
+    } catch (e) {
+        throwErr("addComment", "Could not get match with given id");
+    }
+
+    let newComment = {
+        _id: cid,
+        username: username,
+        content: content
+    };
+
+    match.comments.append(newComment);
+
+    const updateComment = await matchDB.updateOne({ _id: match._id }, { $set: match });
+    if (updateComment.matchedCount === 0)
+        throwErr("addComment", "Could not update match");
+
+    return match;
+}
+
+
 module.exports = {
     addMatch,
     getAllMatches,
     getMatchesByCharName,
-    getMatch
+    getMatch,
+    addComment
 };
