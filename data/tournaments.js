@@ -38,8 +38,7 @@ async function addTournament(name, players) {
         throwErr("addTournament", `Failed to add tournament`);
     }
 
-    newTourny._id = insertInfo.insertedId.toString();
-    return newTourny;
+    return getOneTournament(insertInfo.insertedId.toString());
 }
 
 async function getOneTournament(id) {
@@ -92,7 +91,9 @@ async function addMatchToTournament(tournamentId, matchId) {
         throwErr("addMatchToTournament", "Could not find given tournament");
     }
 
-    tournyCheck.matches.append(mid);
+    tournyCheck.matches.push(mid);
+    delete tournyCheck._id;
+
     const updateTournament = await tournamentDB.updateOne({ _id: tid }, { $set: tournyCheck });
     if (updateTournament.matchedCount === 0)
         throwErr("addMatchToTournament", "Could not update tournament");

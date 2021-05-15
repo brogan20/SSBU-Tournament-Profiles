@@ -142,6 +142,7 @@ async function addComment(matchId, username, content) {
 
     match.comments.append(newComment);
 
+    delete match._id;
     const updateComment = await matchDB.updateOne({ _id: match._id }, { $set: match });
     if (updateComment.matchedCount === 0)
         throwErr("addComment", "Could not update match");

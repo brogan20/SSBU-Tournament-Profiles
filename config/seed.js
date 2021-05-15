@@ -3,6 +3,7 @@ const connection = require('./mongoConnection');
 const matches = require('../data/matches');
 const characters = require('../data/characters');
 const users = require('../data/users');
+const tournaments = require('../data/tournaments');
 
 async function runSetup() {
   const db = await connection();
@@ -24,6 +25,12 @@ async function runSetup() {
   try {
     // We can recover from this; if it can't drop the collection, it's because
     await db.collection('users').drop();
+  } catch (e) {
+    // the collection does not exist yet!
+  }
+  try {
+    // We can recover from this; if it can't drop the collection, it's because
+    await db.collection('tournaments').drop();
   } catch (e) {
     // the collection does not exist yet!
   }
@@ -114,12 +121,14 @@ async function runSetup() {
   ["Sephiroth","sephiroth"],
   ["Pyra/Mythra","pyramythra"]]);
 
+  let tourney1 = await tournaments.addTournament('FUCK THIS CLASS', ['RobotWizard', "Shinks", "pencilman"])
   await users.addUser('RobotWizard', 'Password1');
   await users.addUser('Shinks', 'Password2');
   await users.addUser('brogan20', 'Password3');
   await users.addUser('pencilman', 'Password4');
 
-  await matches.addMatch('pencilman', 'Shinks', 'donkeykong', 'isabelle');
+  let temp = await matches.addMatch('pencilman', 'Shinks', 'donkeykong', 'isabelle');
+  await tournaments.addMatchToTournament(tourney1._id.toString(), temp._id)
   await matches.addMatch('RobotWizard', 'Shinks', 'kirby', 'sheik');
   await matches.addMatch('RobotWizard', 'brogan20', 'shulk', 'bowser');
   await matches.addMatch('Shinks', 'RobotWizard', 'isabelle', 'shulk');
