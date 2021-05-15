@@ -84,6 +84,10 @@ router.post('/', async (req, res) => {
         res.json({comment: "Character played by loser not supplied"})
         return;
     }
+    if (req.session.user != winner.displayName && req.session.user != loser.displayName){
+        res.json({comment: "You can only report a match you played in"})
+        return;
+    }
 
     try {
         let winnerPlayed = charData.charNameMapReverse[matchInfo.winnerPlayed] ? charData.charNameMapReverse[matchInfo.winnerPlayed]: matchInfo.winnerPlayed

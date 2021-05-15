@@ -104,9 +104,17 @@ router.post('/:id', async (req, res) => {
         res.json({comment: "Character played by loser not supplied"})
         return;
     }
+    if (req.session.user != winner.displayName && req.session.user != loser.displayName){
+        res.json({comment: "You can only report a match you played in"})
+        return;
+    }
 
     try {
         const tempTournament = await tournamentData.getOneTournament(req.params.id);
+        if(!tempTournament.players.includes(winner.displayName) || !tempTournament.players.includes(loser.displayName)){
+            res.json({comment: "One of the players is not in the tournament"})
+            return;
+        }
         let winnerPlayed = charData.charNameMapReverse[matchInfo.winnerPlayed] ? charData.charNameMapReverse[matchInfo.winnerPlayed]: matchInfo.winnerPlayed
         let loserPlayed = charData.charNameMapReverse[matchInfo.loserPlayed] ? charData.charNameMapReverse[matchInfo.loserPlayed]: matchInfo.loserPlayed
 
