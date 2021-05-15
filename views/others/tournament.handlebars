@@ -3,7 +3,9 @@
 <div class="tab">
     <button class="tablinks" onclick="openPage(event, 'standings')">Standings</button> {{!might neeed to change this later}}
     <button class="tablinks" onclick="openPage(event, 'allMatches')">All Matches</button>
-    <button class="tablinks" onclick="openPage(event, 'reportMatch')">Report a Match</button>
+    {{#if username}}
+        <button class="tablinks" onclick="openPage(event, 'reportMatch')">Report a Match</button>
+    {{/if}}
 </div>
 <div id="standings" class ="tabcontent">
     <h1>Tournament Results</h1>
@@ -52,29 +54,30 @@
         {{/each}}
     </table>
 </div>
-<div id="reportMatch" class="tabcontent" hidden>
-    <h1>Report a Match</h1>
-    <form class="reportMatch">
-        <fieldset class="small">
-            <label for="winner">Winner</label>
-            <input type="text" name ="winner" id="winner">
-        </fieldset>
-        <fieldset class="large">
-            <label for="winnerPlayed">Winner's Character</label>
-            <input type="text" name ="winnerPlayed" id="winnerPlayed">
-        </fieldset><br>
-        <fieldset class="small">
-            <label for="loser">Loser</label>
-            <input type="text" name ="loser" id="loser">
-        </fieldset>
-        <fieldset class="large">
-            <label for="loserPlayed">Loser's Character</label>
-            <input type="text" name ="loserPlayed" id="loserPlayed">
-        </fieldset><br>
-        <button class="submitMatch">Submit</button>
-    </form>
-</div>
-
+{{#if username}}
+    <div id="reportMatch" class="tabcontent" hidden>
+        <h1>Report a Match</h1>
+        <form class="reportMatch">
+            <fieldset class="small">
+                <label for="winner">Winner</label>
+                <input type="text" name ="winner" id="winner">
+            </fieldset>
+            <fieldset class="large">
+                <label for="winnerPlayed">Winner's Character</label>
+                <input type="text" name ="winnerPlayed" id="winnerPlayed">
+            </fieldset><br>
+            <fieldset class="small">
+                <label for="loser">Loser</label>
+                <input type="text" name ="loser" id="loser">
+            </fieldset>
+            <fieldset class="large">
+                <label for="loserPlayed">Loser's Character</label>
+                <input type="text" name ="loserPlayed" id="loserPlayed">
+            </fieldset><br>
+            <button class="submitMatch">Submit</button>
+        </form>
+    </div>
+{{/if}}
 <script> //make this like not complete garbage
 function openPage(evt, tab) {
   var i, tabcontent, tablinks;

@@ -16,8 +16,8 @@
 
         //If the sort is numeric, uses the int/float value (without special characters)
         //otherwise, just uses innerHTML to sort
-        tempx = isNumeric? parseFloat(x.innerHTML.replace("%","")) : x.innerHTML.toLowerCase();
-        tempy = isNumeric? parseFloat(y.innerHTML.replace("%","")) : y.innerHTML.toLowerCase();
+        let tempx = isNumeric? parseFloat(x.innerHTML.replace("%","")) : x.innerHTML.toLowerCase();
+        let tempy = isNumeric? parseFloat(y.innerHTML.replace("%","")) : y.innerHTML.toLowerCase();
 
         //Checks if the two rows should switch
         shouldSwitch = (tempx > tempy) ? (dir == "asc") : !(tempx == tempy) && (dir == "desc");

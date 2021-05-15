@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
         res.redirect("/")
     } else {
         if (req.session.error) {
-            res.status(401).render('others/login', {titlePage: 'Login', error: req.session.error});
+            res.status(401).render('others/login', {pageTitle: 'Login', error: req.session.error});
         } else {
             res.render('others/login', {pageTitle: 'Login', error: req.session.error});
         }
@@ -20,15 +20,12 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) =>{
     const {username, password} = req.body;
-    let user = {
-        name: "dummyUser",
-        hashedPassword: "dummyPassword"
-    }
     try{
-        user = await userData.getOneUser(username);
+        var user = await userData.getOneUser(username);
     } catch(e){
         req.session.error = true;
         res.redirect('/login');
+        return;
     }
     let match = await bcrypt.compare(password, user.hashedPassword);
     if (match) {

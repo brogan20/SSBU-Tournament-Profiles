@@ -11,6 +11,10 @@ html {
     border: solid black 1px;
 }
 
+#matchTable p, #matchTable a {
+    margin: 0px;
+}
+
 tr:nth-child(even){background-color: #f2f2f2;}
 
 #matchTable tr:hover {background-color: #ddd;}
@@ -140,4 +144,8 @@ img.vs {
 
 div.home {
     text-align: center;
+}
+
+p.error {
+    color: red;
 }

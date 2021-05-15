@@ -34,8 +34,8 @@ router.get('/:id', async (req, res) => {
         res.render('others/404error', {pageTitle: "404", username: req.session.user, error: `Match ${req.params.id} not found`});
         return;
     }
-    match.winnerPlayedDisplay = charData.charNameMap[match.winnerPlayed]
-    match.loserPlayedDisplay = charData.charNameMap[match.loserPlayed]
+    match.winnerPlayedDisplay = charData.charNameMap[match.winnerPlayed];
+    match.loserPlayedDisplay = charData.charNameMap[match.loserPlayed];
     res.render('others/match', {pageTitle: `Match: ${match.winner} vs. ${match.loser}`, username: req.session.user, match: match});
 });
 
@@ -44,32 +44,32 @@ router.post('/', async (req, res) => {
     let winner;
     let loser;
     if (!matchInfo) {
-        res.json({comment: "Match info not supplied"})
+        res.json({comment: "Match info not supplied"});
         return;
     }
     if (!matchInfo.winner || typeof matchInfo.winner != 'string') {
-        res.json({comment: "Winner not supplied"})
+        res.json({comment: "Winner not supplied"});
         return;
     }
     try{
         winner = await userData.getOneUser(matchInfo.winner)
     } catch(e){
-        res.json({comment: "Winner is not in our database"})
+        res.json({comment: "Winner is not in our database"});
         return;
     }
     if (!matchInfo.loser || typeof matchInfo.loser != 'string') {
         res.render('others/400error', {pageTitle: "400", username: req.session.user, error: "Loser not supplied"});
-        res.json({comment: "Loser not supplied"})
+        res.json({comment: "Loser not supplied"});
         return;
     }
     try{
         loser = await userData.getOneUser(matchInfo.loser)
     } catch(e){
-        res.json({comment: "Loser is not in our database"})
+        res.json({comment: "Loser is not in our database"});
         return;
     }
     if (!matchInfo.winnerPlayed || typeof matchInfo.winnerPlayed != 'string') {
-        res.json({comment: "Character played by winner not supplied"})
+        res.json({comment: "Character played by winner not supplied"});
         return;
     }
     if (!charData.charNameMapReverse[matchInfo.winnerPlayed] && !charData.charNameMap[matchInfo.winnerPlayed]){
