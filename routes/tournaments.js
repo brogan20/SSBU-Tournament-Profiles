@@ -11,17 +11,17 @@ router.get('/', async (req, res) => {
     try {
         var tournaments = await tournamentData.getAllTournaments();
     } catch (e) {
-        res.render('others/404error', {pageTitle: "404", error: "Tournaments not found"});
+        res.render('others/404error', {pageTitle: "404", username: req.session.user, error: "Tournaments not found"});
         return;
     }
-    res.render('others/alltournaments', {pageTitle: "Tournament Profiles", tournaments: tournaments});
+    res.render('others/alltournaments', {pageTitle: "Tournament Profiles", username: req.session.user, tournaments: tournaments});
 });
 
 router.get('/:id', async (req, res) => {
     try {
         var tournament = await tournamentData.getOneTournament(req.params.id);
     } catch (e) {
-        res.render('others/404error', {pageTitle: "404", error: `Tournament ${req.params.id} not found`});
+        res.render('others/404error', {pageTitle: "404", username: req.session.user, error: `Tournament ${req.params.id} not found`});
         return;
     }
 
@@ -56,7 +56,7 @@ router.get('/:id', async (req, res) => {
     }
 
     users = Object.entries(users).sort((a,b) => b[1][0] - a[1][0]);
-    res.render('others/tournament', {pageTitle: `Tournament: ${tournament.name}`, tournament: tournament, users: users, matches: matches});
+    res.render('others/tournament', {pageTitle: `Tournament: ${tournament.name}`, username: req.session.user, tournament: tournament, users: users, matches: matches});
 });
 
 router.post('/:id', async (req, res) => {
@@ -76,7 +76,7 @@ router.post('/:id', async (req, res) => {
         return;
     }
     if (!matchInfo.loser || typeof matchInfo.loser != 'string') {
-        res.render('others/400error', {pageTitle: "400", error: "Loser not supplied"});
+        res.render('others/400error', {pageTitle: "400", username: req.session.user, error: "Loser not supplied"});
         res.json({comment: "Loser not supplied"})
         return;
     }

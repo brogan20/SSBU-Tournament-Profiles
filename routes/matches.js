@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     try {
         var matches = await matchData.getAllMatches();
     } catch (e) {
-        res.render('others/404error', {pageTitle: "404", error: "Matches not found"});
+        res.render('others/404error', {pageTitle: "404", username: req.session.user, error: "Matches not found"});
         return;
     }
 
@@ -24,19 +24,19 @@ router.get('/', async (req, res) => {
             continue;
         }
     }
-    res.render('others/allmatches', {pageTitle: "All Matches", matches: matches});
+    res.render('others/allmatches', {pageTitle: "All Matches", username: req.session.user, matches: matches});
 });
 
 router.get('/:id', async (req, res) => {
     try {
         var match = await matchData.getMatch(req.params.id);
     } catch (e) {
-        res.render('others/404error', {pageTitle: "404", error: `Match ${req.params.id} not found`});
+        res.render('others/404error', {pageTitle: "404", username: req.session.user, error: `Match ${req.params.id} not found`});
         return;
     }
     match.winnerPlayedDisplay = charData.charNameMap[match.winnerPlayed]
     match.loserPlayedDisplay = charData.charNameMap[match.loserPlayed]
-    res.render('others/match', {pageTitle: `Match: ${match.winner} vs. ${match.loser}`, match: match});
+    res.render('others/match', {pageTitle: `Match: ${match.winner} vs. ${match.loser}`, username: req.session.user, match: match});
 });
 
 router.post('/', async (req, res) => {
@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
         return;
     }
     if (!matchInfo.loser || typeof matchInfo.loser != 'string') {
-        res.render('others/400error', {pageTitle: "400", error: "Loser not supplied"});
+        res.render('others/400error', {pageTitle: "400", username: req.session.user, error: "Loser not supplied"});
         res.json({comment: "Loser not supplied"})
         return;
     }

@@ -12,7 +12,7 @@ const constructorMethod = (app) => {
   app.use('/login', loginRoutes);
 
   app.get('/', (req, res) => {
-    res.render('others/landing', {pageTitle: 'SSBU Tournament Profiles', landing: true});
+    res.render('others/landing', {pageTitle: 'SSBU Tournament Profiles', landing: true, username: req.session.user});
   });
   app.use('*', (req, res) => {
     res.render('others/404error', {pageTitle: '404', error: 'This page does not exist'});

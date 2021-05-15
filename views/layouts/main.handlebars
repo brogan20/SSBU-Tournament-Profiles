@@ -11,15 +11,15 @@
 	<h1>SSBU Tournament Profiles</h1>
 	<main>
         {{#unless landing}}
-        <a href="/">Main page</a>
-        <a href="/characters">Character Profiles</a>
-        <a href="/users">User Lookup</a>
-        <a href="/tournaments">Tournament Lookup</a>
-        <a href="/matches">All Matches</a>
-        {{#if loggedIn}}
-        <p>{{greeting}}</p>
+        <a class="header" href="/">Main page</a>
+        <a class="header" href="/characters">Character Profiles</a>
+        <a class="header" href="/users">User Lookup</a>
+        <a class="header" href="/tournaments">Tournament Lookup</a>
+        <a class="header" href="/matches">All Matches</a>
+        {{#if username}}
+        <a class="header" href="/login/logout">Log Out</a>
         {{else}}
-        <a href="/login">Log In</a>
+        <a class="header" href="/login">Log In</a>
         {{/if}}
         <h1>{{pageTitle}}</h1>
         {{/unless}}
