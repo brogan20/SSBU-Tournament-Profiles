@@ -24,11 +24,11 @@ router.get('/:id', async (req, res) => {
     }
 
     let matches;
-    let users;
-    let mostPlayed;
+    let users = {};
+    let mostPlayed = {};
     for(const elem of tournament.players){
-        users[elem] = [0,0]
-        mostPlayed[elem]
+        users[elem] = [0,0];
+        mostPlayed[elem] = {};
     }
     for(const elem of tournament.matches){
         try{
@@ -45,11 +45,11 @@ router.get('/:id', async (req, res) => {
         }
     }
 
-    for(const elem of mostPlayed){
-        elem["final"] = elem.entries().reduce((a,b) => a[1] > b[1] ? a : b)[0];
+    for(const elem in mostPlayed){
+        users[elem][3] = Object.entries(mostPlayed[elem]).reduce((a,b) => a[1] > b[1] ? a : b)[0];
     }
-    for(elem of users){
-        elem[3] = elem[0]/(elem[0] + elem[1]);
+    for(const elem in users){
+        users[elem][2] =  (Math.round(users[elem][0]/( users[elem][0] +  users[elem][1]) * 1000) / 10).toFixed(2);
     }
     res.render('others/tournament', {pageTitle: `Tournament: ${req.params.id}`, tournament: tournament, users: users, matches: matches, mostPlayed: mostPlayed});
 });
