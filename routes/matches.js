@@ -42,7 +42,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    let matchInfo = xss(req.body);
+    let matchInfo = req.body;
     let winner;
     let loser;
     if (!matchInfo) {
@@ -106,7 +106,7 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/:id', async (req, res) => {
-    let commentInfo = xss(req.body);
+    let commentInfo = req.body;
     if (!commentInfo) {
         res.json({comment: "Comment info not supplied"})
         return;
