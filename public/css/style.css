@@ -131,6 +131,24 @@ table.opponent th {
     border: solid black 1px;
 }
 
+table.winloss {
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: solid black 1px;
+}
+
+table.winloss tr td{
+    border-collapse: collapse;
+    border: solid black 1px;
+    min-width: 100px;
+    text-align: center;
+}
+
+table.winloss th {
+    background-color: lightcoral;
+    border: solid black 1px;
+}
+
 a.header {
     padding-left: 10px;
     padding-right: 10px;
