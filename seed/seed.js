@@ -1,4 +1,4 @@
-const connection = require('./mongoConnection');
+const connection = require('../config/mongoConnection');
 const bcrypt = require('bcrypt');
 const matches = require('../data/matches');
 const characters = require('../data/characters');
@@ -440,6 +440,9 @@ async function runSetup() {
   await matches.addMatch('pencilman', 'TheRock1211', 'incineroar', 'piranhaplant').then((temp) => tournaments.addMatchToTournament(tourney3._id.toString(), temp._id));
   await matches.addMatch('pencilman', 'TheRock1211', 'mrgameandwatch', 'piranhaplant').then((temp) => tournaments.addMatchToTournament(tourney3._id.toString(), temp._id));
   await matches.addMatch('pencilman', 'TheRock1211', 'incineroar', 'piranhaplant').then((temp) => tournaments.addMatchToTournament(tourney3._id.toString(), temp._id));
+
+  await db.serverConfig.close();
+  console.log("Seeding complete");
 }
 
-exports = module.exports = { runSetup };
+runSetup();
