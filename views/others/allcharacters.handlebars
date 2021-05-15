@@ -6,13 +6,13 @@
     <button class="search">Search</button>
 </form>
 <button class="clearResults" hidden="true">Clear Results</button>
-<table>
+<table id="characterList">
     <tr class="header">
         <th class="sortButton">Name</th>
     </tr>
     {{#each characters}}
         <tr class="row">
-            <td class="Name"><a href="/characters/{{this.abrvName}}">{{this.displayName}}</a></td>
+            <td class="Name"><img src="../../public/imageheads/{{this.abrvName}}.png"><a href="/characters/{{this.abrvName}}">{{this.displayName}}</a></td>
         </tr>
     {{/each}}
 </table>
