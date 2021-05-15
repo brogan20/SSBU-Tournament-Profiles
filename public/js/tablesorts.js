@@ -20,7 +20,7 @@
         tempy = isNumeric? parseFloat(y.innerHTML.replace("%","")) : y.innerHTML.toLowerCase();
 
         //Checks if the two rows should switch
-        shouldSwitch = (tempx > tempy) ? (dir == "asc") : (dir == "desc");
+        shouldSwitch = (tempx > tempy) ? (dir == "asc") : !(tempx == tempy) && (dir == "desc");
 
         //Makes the swap and continues
         if(shouldSwitch){
