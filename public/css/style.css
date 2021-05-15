@@ -96,7 +96,8 @@ table.standings td.Player{
 }
 
 a.header {
-    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 fieldset.small {
@@ -119,8 +120,24 @@ fieldset input{
 
 #title {
     font-family: Impact;
+    text-align: center;
+}
+
+div.links {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+div.links a.header {
+    background-color: lightblue;
+    border: solid black 1px;
 }
 
 img.vs {
     padding-bottom: 100px;
+}
+
+div.home {
+    text-align: center;
 }
