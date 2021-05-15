@@ -22,7 +22,7 @@ app.use(
   session({
     name: 'SmashUltimateApp',
     secret: 'This is a secret',
-    saveUnitialized: true,
+    saveUninitialized: true,
     resave: false,
     cookie: {maxAge: 60000}
   })

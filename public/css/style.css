@@ -174,8 +174,14 @@ img.vs {
     padding-bottom: 100px;
 }
 
-div.home {
+div.home{
     text-align: center;
+}
+
+div.home img {
+    height: auto; 
+    width: auto; 
+    max-width: 866px; 
 }
 
 p.error {

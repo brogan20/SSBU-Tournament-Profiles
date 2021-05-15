@@ -89,7 +89,7 @@ async function addMatchToTournament(tournamentId, matchId) {
     if (!matchId || typeof matchId !== "string" || !matchId.trim()) {
         throwErr("addMatchToTournament", "Must be given matchId");
     }
-    mid = ObjectId(matchId);
+    let mid = ObjectId(matchId);
 
     // Check match exists
     try {
