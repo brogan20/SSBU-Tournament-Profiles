@@ -1,19 +1,19 @@
 const startUpDocs = require('./config/seed');
 //const session = require('express-session');
 async function main() {
-  const startUp = await startUpDocs.runSetup();
+  await startUpDocs.runSetup();
 }
 main();
 
 const express = require('express');
 const app = express();
-const static = express.static(__dirname + '/public');
+const still = express.static(__dirname + '/public');
 
 const configRoutes = require('./routes');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 
-app.use('/public', static);
+app.use('/public', still);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

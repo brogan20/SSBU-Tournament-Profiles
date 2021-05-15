@@ -1,5 +1,4 @@
 const express = require('express');
-const { matches } = require('../config/mongoCollections');
 const router = express.Router();
 const data = require('../data');
 const tournamentData = data.tournaments;

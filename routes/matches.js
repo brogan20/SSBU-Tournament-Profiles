@@ -118,7 +118,7 @@ router.post('/:id', async (req, res) => {
         return;
     }
     try {
-        const comment = await matchData.addComment(req.params.id, req.session.user, commentInfo.comment);
+        await matchData.addComment(req.params.id, req.session.user, commentInfo.comment);
         res.status(200).json({poster: req.session.user, content: commentInfo.comment});
     } catch (e) {
         res.json({comment: "Failed to add comment"})
