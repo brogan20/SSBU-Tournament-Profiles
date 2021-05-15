@@ -6,6 +6,9 @@
             //Uses the built in includes function to check if the result should be shown
             let found = false;
             for(const elem of $(this).children()){
+                if($(elem).hasClass("excludeFromSearch")){
+                    continue;
+                }
                 if(elem.textContent.trim().toLowerCase().includes(searchTerm.toLowerCase())){
                     $(this).show()
                     found = true;
