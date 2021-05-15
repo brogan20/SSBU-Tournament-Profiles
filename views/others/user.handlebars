@@ -1,6 +1,5 @@
 <script src="/public/js/tablesorts.js"></script>
-<h1>{{user.displayName}}</h1>
-<img src={{charImage}}>
+<img src="../../public/images/{{mostPlayed}}.png">
 <dt>Total Wins</dt>
 <dd>{{wins}}</dd>
 <dt>Total Losses</dt>
@@ -20,7 +19,7 @@
         <th class="sortButtonNumeric">Winrate</th>
         {{#each user.charPlayed}}
         <tr>
-            <td class="Character"><a href="../characters/{{@key}}">{{this.[3]}}</a></td>
+            <td class="Character"><img src="../../public/imageheads/{{@key}}.png"><a href="../characters/{{@key}}">{{this.[3]}}</a></td>
             <td class="Wins">{{this.[0]}}</td>
             <td class="Losses">{{this.[1]}}</td>
             <td class="Winrate">{{this.[2]}}%</td>
