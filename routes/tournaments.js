@@ -51,7 +51,7 @@ router.get('/:id', async (req, res) => {
     for(elem of users){
         elem[3] = elem[0]/(elem[0] + elem[1]);
     }
-    res.render('others/tournament', {pageTitle: `Tournament: ${req.params.id}`, tournament: tournament, users: users, matches: matches});
+    res.render('others/tournament', {pageTitle: `Tournament: ${req.params.id}`, tournament: tournament, users: users, matches: matches, mostPlayed: mostPlayed});
 });
 
 router.post('/', async (req, res) => {
