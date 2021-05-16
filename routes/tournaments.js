@@ -26,20 +26,32 @@ router.get('/:id', async (req, res) => {
         return;
     }
 
+    //Information that we need to calculate for the handlebars, mostPlayed will be the characters each user
+    //played the most in the tournament
+    //matches: array of match db entries
+    //users: object that makes user display names to array of the form [numWins, numLosses, winRate, [3 most played characters]]
     let matches = [];
     let users = {};
     let mostPlayed = {};
     for(const elem of tournament.players){
+        //Initializes the object
         users[elem] = [0,0];
         mostPlayed[elem] = {};
     }
     for(const elem of tournament.matches){
         try{
+            //Goes through every match and adds the appropriate data
             let match = await matchData.getMatch(elem.toString());
+
+            //Sets the display name of the characters, for the handlebars
             match.winnerPlayedDisplay = charData.charNameMap[match.winnerPlayed]
             match.loserPlayedDisplay = charData.charNameMap[match.loserPlayed]
+
+            //Adds to the win or lose count of the relevant users
             users[match.winner][0] += 1;
             users[match.loser][1] += 1;
+
+            //Adds to the mostPlayed object so we can determine who they have played the most later
             mostPlayed[match.winner][match.winnerPlayed] = mostPlayed[match.winner].hasOwnProperty(match.winnerPlayed) ? mostPlayed[match.winner][match.winnerPlayed] += 1 : 1
             mostPlayed[match.loser][match.loserPlayed] = mostPlayed[match.loser].hasOwnProperty(match.loserPlayed) ? mostPlayed[match.loser][match.loserPlayed] += 1 : 1
             matches.push(match);
@@ -50,9 +62,11 @@ router.get('/:id', async (req, res) => {
     }
 
     for(const elem in mostPlayed){
+        //Goes through every user and finds the 3 characters they played the most
         users[elem][3] = Object.entries(mostPlayed[elem]).sort((a,b) => b[1] - a[1]).slice(0,3);
     }
     for(const elem in users){
+        //Takes the wins and losses and calculates the winrate for each user
         users[elem][2] =  (Math.round(users[elem][0]/( users[elem][0] +  users[elem][1]) * 1000) / 10).toFixed(2);
     }
 
@@ -61,9 +75,12 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/:id', async (req, res) => {
+    //Adds a match to a given tournament
     let matchInfo = req.body;
     let winner;
     let loser;
+
+    //Checks parameters
     if (!matchInfo) {
         res.json({comment: "Match info not supplied"})
         return;
@@ -111,14 +128,20 @@ router.post('/:id', async (req, res) => {
     }
 
     try {
+        //Finds the tournament that the match will be added to (the ID is in the url)
         const tempTournament = await tournamentData.getOneTournament(req.params.id);
+
+        //Checks if both players were playing in the tournament
         if(!tempTournament.players.includes(winner.displayName) || !tempTournament.players.includes(loser.displayName)){
             res.json({comment: "One of the players is not in the tournament"})
             return;
         }
+
+        //Makes sure that the character names are abbreviated
         let winnerPlayed = charData.charNameMapReverse[matchInfo.winnerPlayed] ? charData.charNameMapReverse[matchInfo.winnerPlayed]: matchInfo.winnerPlayed
         let loserPlayed = charData.charNameMapReverse[matchInfo.loserPlayed] ? charData.charNameMapReverse[matchInfo.loserPlayed]: matchInfo.loserPlayed
 
+        //Adds the match and adds to the tournament
         const match = await matchData.addMatch(winner.displayName, loser.displayName, winnerPlayed, loserPlayed)
         await tournamentData.addMatchToTournament(tempTournament._id.toString(), match._id)
 

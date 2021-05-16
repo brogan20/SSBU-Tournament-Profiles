@@ -23,24 +23,34 @@ router.get('/:id', async (req, res) => {
         return;
     }
 
+    //Parameters needed to calculate overall winrate and to find the users "rival"
     let wins = 0;
     let losses = 0;
     let rival = {displayName: "This user has not played anyone", wins: 0, losses: 0}
     for(const elem in user.userPlayed){
+        //For every user that they have played, add to the wins and losses count
         wins += user.userPlayed[elem][0];
         losses += user.userPlayed[elem][1];
+
+        //If the user has played this person more often than their current rival, this person becomes the current rival
         if(user.userPlayed[elem][0] + user.userPlayed[elem][1] > rival.wins + rival.losses){
             rival.displayName = elem;
             rival.wins = user.userPlayed[elem][0];
             rival.losses = user.userPlayed[elem][1];
         }
+
+        //Calculates the users winrate versus this person
         user.userPlayed[elem][2] = (Math.round(user.userPlayed[elem][0] / (user.userPlayed[elem][0] + user.userPlayed[elem][1]) * 1000) / 10).toFixed(2);
     }
     let mostPlayed = "none";
     let numgames = 0;
+    //Calculates winrates for each character they play
     for(const elem in user.charPlayed){
+        //user.charPlayed is of the form [wins, losses, winrate, displayName]
         user.charPlayed[elem][2] = (Math.round(user.charPlayed[elem][0] / (user.charPlayed[elem][0] + user.charPlayed[elem][1]) * 1000) / 10).toFixed(2);
         user.charPlayed[elem][3] = charData.charNameMap[elem];
+
+        //Same logic as the rival, but is used to find the character they played the most
         if (numgames < user.charPlayed[elem][0] + user.charPlayed[elem][1]) {
             numgames =user.charPlayed[elem][0] + user.charPlayed[elem][1];
             mostPlayed = elem;

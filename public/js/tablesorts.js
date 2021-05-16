@@ -1,5 +1,6 @@
 (function ($){
   //Code taken from https://www.w3schools.com/howto/howto_js_sort_table.asp and modified for this use
+  //Has an isNumeric field because numbers cannot be sorted like strings (i.e. 10 > 9, but "10" < "9")
   function sortTable(sortIndex, table, isNumeric) {
     let rows, switching, i, x, y, shouldSwitch, dir, switchcount;
     switching = true;
@@ -14,7 +15,7 @@
         x = rows[i].getElementsByClassName(sortIndex)[0];
         y = rows[i + 1].getElementsByClassName(sortIndex)[0];
 
-        //If the sort is numeric, uses the int/float value (without special characters)
+        //If the sort is numeric, uses the float value (without special characters)
         //otherwise, just uses innerHTML to sort
         let tempx = isNumeric? parseFloat(x.innerHTML.replace("%","")) : x.innerHTML.toLowerCase();
         let tempy = isNumeric? parseFloat(y.innerHTML.replace("%","")) : y.innerHTML.toLowerCase();
@@ -39,6 +40,7 @@
     }
   }
 
+  //creates an onClick function for the sortButton and sortButtonNumeric class
   $(document).on("click",".sortButton, .sortButtonNumeric", function(){
     sortTable($(this).html(), $(this).parents()[1], $(this).attr("class") == "sortButtonNumeric");
   })

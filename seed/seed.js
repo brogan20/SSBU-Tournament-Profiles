@@ -35,6 +35,7 @@ async function runSetup() {
     // the collection does not exist yet!
   }
 
+  //Seeds the character database
   await characters.initCharDB(
   [["Mario","mario"],
   ["Donkey Kong","donkeykong"],
@@ -121,11 +122,13 @@ async function runSetup() {
   ["Sephiroth","sephiroth"],
   ["Pyra/Mythra","pyramythra"]]);
 
+  //Creates the three tournaments we will add matches to
   let tourney1 = await tournaments.addTournament('Tournament1', ['RobotWizard', "Shinks", "pencilman", "brogan20", "DoctorFlopper", "TheRock1211", "lempie", "p0ptartlov3r"])
   let tourney2 = await tournaments.addTournament('Tournament2 (missing lempie)', ['RobotWizard', "Shinks", "pencilman", "brogan20", "DoctorFlopper", "TheRock1211", "p0ptartlov3r"])
   let tourney3 = await tournaments.addTournament('Tournament3', ['RobotWizard', "Shinks", "pencilman", "brogan20", "DoctorFlopper", "TheRock1211", "lempie", "p0ptartlov3r"])
 
   const saltRounds = 10;
+  //Creates the users that are initiall in the DB
   await users.addUser('RobotWizard', await bcrypt.hash('Password1',saltRounds));
   await users.addUser('Shinks', await bcrypt.hash('Password1',saltRounds));
   await users.addUser('brogan20', await bcrypt.hash('Password1',saltRounds));
@@ -134,6 +137,9 @@ async function runSetup() {
   await users.addUser('TheRock1211', await bcrypt.hash('Password1',saltRounds));
   await users.addUser('lempie', await bcrypt.hash('Password1',saltRounds));
   await users.addUser('p0ptartlov3r', await bcrypt.hash('Password1',saltRounds));
+
+  //Everything after this point was created by a python script, creates random matches for each tournament and adds them to
+  //the database. Certain users are given to be more skilled, and this data reflects that.
 
   //TOURNAMENT 1
   await matches.addMatch('pencilman', 'DoctorFlopper', 'donkeykong', 'mario').then((temp) => tournaments.addMatchToTournament(tourney1._id.toString(), temp._id));
