@@ -1,7 +1,7 @@
 # cs546_s21_group3_final_proj
 Running the application:
 1. Installing node modules: `npm install`
-2. Running: `npm start`
+2. Running: `npm start` (also seeds the database)
 
 Core features: 
 * Landing Page: Explains the purpose of the website and acts as a link to any other part of the website.
