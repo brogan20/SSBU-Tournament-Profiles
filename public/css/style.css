@@ -108,6 +108,7 @@ table.character {
 table.character tr td{
     border-collapse: collapse;
     border: solid black 1px;
+    min-width: 60px;
 }
 
 table.character th {
@@ -124,6 +125,7 @@ table.opponent {
 table.opponent tr td{
     border-collapse: collapse;
     border: solid black 1px;
+    min-width: 60px;
 }
 
 table.opponent th {

@@ -45,7 +45,7 @@
                         (<a href="../characters/${responseMessage.loserPlayed}">${responseMessage.loserPlayedDisplay}</a>)
                     </td>
                     ${temp[3] == "matches" ? "<td class='Tournament'><p>N/A</p></td>" : ""}
-                    <td class="link excludeFromSearch"><a href="../matches/${responseMessage._id}">link</a></td>
+                    <td class="link excludeFromSearch"><a href="../matches/${responseMessage._id}">Go to Match</a></td>
                 </tr>    `
                 $("#matchTable tr:last").after(htmlString)
                 alert("Match reported!, it should be visible at the bottom of the match list")
