@@ -41,6 +41,7 @@ router.get('/:id', async (req, res) => {
         else{
             losses += 1;
         }
+        //Creates a field that has the display name, since both will need to be used in the handlebars
         elem.winnerPlayedDisplay = characterData.charNameMap[elem.winnerPlayed];
         elem.loserPlayedDisplay = characterData.charNameMap[elem.loserPlayed];
     }

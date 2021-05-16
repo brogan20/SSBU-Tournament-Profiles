@@ -1,4 +1,9 @@
 # cs546_s21_group3_final_proj
+Running the application:
+1. Installing node modules: `npm install`
+2. Seeding the Database: `npm run seed`
+2. Running: `npm start`
+
 Core features: 
 * Landing Page: Explains the purpose of the website and acts as a link to any other part of the website.
 * User Profiles: Tracks tournaments attended, characters frequently played, win rates with other players, and win rates on each character.

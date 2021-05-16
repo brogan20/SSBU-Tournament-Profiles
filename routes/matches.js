@@ -17,9 +17,11 @@ router.get('/', async (req, res) => {
     }
 
     for(const elem of matches){
+        //For every match, find the display name of each character for the handlebars
         elem.winnerPlayedDisplay = charData.charNameMap[elem.winnerPlayed]
         elem.loserPlayedDisplay = charData.charNameMap[elem.loserPlayed]
         try{
+            //Finds the tournament associated with each match
             let temp = await tournamentData.findMatchTournament(elem._id.toString());
             elem.tourney = temp ? temp : undefined
         } catch(e){
@@ -36,15 +38,19 @@ router.get('/:id', async (req, res) => {
         res.render('others/404error', {pageTitle: "404", username: xss(req.session.user), error: `Match ${xss(req.params.id)} not found`});
         return;
     }
+    //We need to pass the display name of the characters to the handlebars, 
+    //otherwise Mr. Game & Watch will be displayed as "mrgameandwatch"
     match.winnerPlayedDisplay = charData.charNameMap[match.winnerPlayed];
     match.loserPlayedDisplay = charData.charNameMap[match.loserPlayed];
     res.render('others/match', {pageTitle: `Match: ${match.winner} vs. ${match.loser}`, username: xss(req.session.user), match: match});
 });
 
 router.post('/', async (req, res) => {
+    //Adds a match (unaffiliated with a tournament)
     let matchInfo = req.body;
     let winner;
     let loser;
+    //Checks just about everything that can be wrong with the input
     if (!matchInfo) {
         res.json({comment: "Match info not supplied"});
         return;
@@ -92,11 +98,13 @@ router.post('/', async (req, res) => {
     }
 
     try {
+        //Makes sure that the characters names are abbreviated and not display name (as is convention in ur map database)
         let winnerPlayed = charData.charNameMapReverse[matchInfo.winnerPlayed] ? charData.charNameMapReverse[matchInfo.winnerPlayed]: matchInfo.winnerPlayed
         let loserPlayed = charData.charNameMapReverse[matchInfo.loserPlayed] ? charData.charNameMapReverse[matchInfo.loserPlayed]: matchInfo.loserPlayed
 
         const match = await matchData.addMatch(winner.displayName, loser.displayName, winnerPlayed, loserPlayed)
 
+        //Returns the information that the clientsideJS needs
         res.status(200).json({...match, winnerPlayedDisplay: charData.charNameMap[winnerPlayed], loserPlayedDisplay: charData.charNameMap[loserPlayed]});
     } catch (e) {
         console.log(e)
@@ -107,6 +115,9 @@ router.post('/', async (req, res) => {
 
 router.post('/:id', async (req, res) => {
     let commentInfo = req.body;
+    //Adds a comment to a match
+
+    //Checks parameters
     if (!commentInfo) {
         res.json({comment: "Comment info not supplied"})
         return;
@@ -120,6 +131,7 @@ router.post('/:id', async (req, res) => {
         return;
     }
     try {
+        //Attempts to add the comment and return the proper information to the clientside js
         await matchData.addComment(xss(req.params.id), xss(req.session.user), commentInfo.comment);
         res.status(200).json({poster: xss(req.session.user), content: commentInfo.comment});
     } catch (e) {

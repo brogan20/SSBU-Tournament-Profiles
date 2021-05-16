@@ -1,6 +1,7 @@
 (function($){
     $(document).on('click','.submitMatch', function(event) {
         event.preventDefault();
+        //Checks if each field is valid and alerts the user if one is not
         if(!$("#winner").val() || !(typeof $("#winner").val() == "string") || !$("#winner").val().trim()){
             alert("Please fill in the winner field with a valid term");
             return;
@@ -17,6 +18,9 @@
             alert("Please fill in the loser's character field with a valid term");
             return;
         }
+
+        //Uses the current url in order to determine where to make a POST request to
+        //Since this is in a form, we can say for sure that this is only called when the URL is /tournaments/:id or /matches
         let temp = $(location).attr('href').split('/');
         var requestConfig = {
             method: 'POST',
@@ -30,10 +34,12 @@
         };
 
         $.ajax(requestConfig).then(function(responseMessage) {
+            //The post request will return a single object with an error message if something went wrong
             if(responseMessage.comment){
                 alert(responseMessage.comment);
             }
             else{
+                //Otherwise creates the proper HTML and appends it to the proper table
                 let htmlString = `
                 <tr class="match">
                     <td class="Winner">
