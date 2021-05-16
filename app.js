@@ -1,5 +1,8 @@
-//const session = require('express-session');
-
+const startUpDocs = require('./seed/seed');
+async function main() {
+  await startUpDocs.runSetup();
+}
+main();
 
 const express = require('express');
 const app = express();

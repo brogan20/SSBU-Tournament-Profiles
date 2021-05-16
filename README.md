@@ -1,7 +1,6 @@
 # cs546_s21_group3_final_proj
 Running the application:
 1. Installing node modules: `npm install`
-2. Seeding the Database: `npm run seed`
 2. Running: `npm start`
 
 Core features: 

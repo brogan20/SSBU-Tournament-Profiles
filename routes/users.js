@@ -56,7 +56,6 @@ router.get('/:id', async (req, res) => {
             mostPlayed = elem;
         }
     }
-
     res.render('others/user', {pageTitle: `User: ${user.displayName}`, username: xss(req.session.user), mostPlayed: mostPlayed, user: user, wins: wins, losses: losses, rival: rival});
 });
 

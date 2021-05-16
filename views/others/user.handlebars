@@ -9,7 +9,7 @@
     <dd>Users rival is {{rival.displayName}}, they have beat them {{rival.wins}} times and lost to them {{rival.losses}} times</dd>
 </dl>
 <div class="tab">
-    <button class="tablinks" onclick="openPage(event, 'character')">Winrates by Character</button> {{!might neeed to change this later}}
+    <button class="tablinks" onclick="openPage(event, 'character')">Winrates by Character</button>
     <button class="tablinks" onclick="openPage(event, 'opponent')">Winrates by Opponent</button>
 </div>
 <div id="character" class ="tabcontent">
@@ -51,7 +51,7 @@
     </table>
 </div>
 
-<script> //make this like not complete garbage
+<script>
 function openPage(evt, tab) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");

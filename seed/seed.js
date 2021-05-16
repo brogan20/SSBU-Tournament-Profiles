@@ -446,9 +446,6 @@ async function runSetup() {
   await matches.addMatch('pencilman', 'TheRock1211', 'incineroar', 'piranhaplant').then((temp) => tournaments.addMatchToTournament(tourney3._id.toString(), temp._id));
   await matches.addMatch('pencilman', 'TheRock1211', 'mrgameandwatch', 'piranhaplant').then((temp) => tournaments.addMatchToTournament(tourney3._id.toString(), temp._id));
   await matches.addMatch('pencilman', 'TheRock1211', 'incineroar', 'piranhaplant').then((temp) => tournaments.addMatchToTournament(tourney3._id.toString(), temp._id));
-
-  await db.serverConfig.close();
-  console.log("Seeding complete");
 }
 
-runSetup();
+exports = module.exports = { runSetup };

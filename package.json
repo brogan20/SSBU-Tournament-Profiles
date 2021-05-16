@@ -4,8 +4,7 @@
   "description": "Super Smash Bros Ultimate Tournament Profiles",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "seed": "node ./seed/seed.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
