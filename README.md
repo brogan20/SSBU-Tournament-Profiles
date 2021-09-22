@@ -1,4 +1,4 @@
-# cs546_s21_group3_final_proj
+# SSBU Tournament Profiles
 Running the application:
 1. Installing node modules: `npm install`
 2. Running: `npm start` (also seeds the database)
